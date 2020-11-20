@@ -1,0 +1,82 @@
+{
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarBackgroundColor":"#5b74eb",
+				"navigationBarTitleText":"咨询",
+				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+		}
+	    ,{
+            "path" : "pages/lawyer-list/lawyer-list",
+            "style" : {
+				"navigationBarBackgroundColor":"#fff",
+				"navigationBarTitleText":"找律师",
+				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+        }
+        ,{
+            "path" : "pages/user/user",
+            "style" : {
+				"navigationStyle":"custom"
+			}
+        }
+        ,{
+            "path" : "pages/lawyer-info/lawyer-info",
+            "style" : {
+				"navigationBarBackgroundColor":"#fff",
+				"navigationBarTitleText":"律师主页",
+				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+        }
+        ,{
+            "path" : "pages/order-submit/order-submit",
+            "style" : {
+				"navigationBarBackgroundColor":"#fff",
+				"navigationBarTitleText":"图文专问",
+				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+        }
+        ,{
+            "path" : "pages/login/login",
+            "style" : {
+            	"navigationBarBackgroundColor":"#fff",
+            	"navigationBarTitleText":"用户登录",
+            	"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+            }
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTitleText": "法律平台"
+	},
+	"tabBar": {
+			"color": "#909399",
+			"selectedColor": "#1296db",
+			"backgroundColor": "#FFFFFF",
+			"borderStyle": "black",
+			"list": [
+				{
+					"pagePath": "pages/index/index",
+					"iconPath": "static/tabbar/index.png",
+					"selectedIconPath": "static/tabbar/index_selected.png",
+					"text": "首页"
+				},
+				{
+					"pagePath": "pages/lawyer-list/lawyer-list",
+					"iconPath": "static/tabbar/lawyer.png",
+					"selectedIconPath": "static/tabbar/lawyer_selected.png",
+					"text": "找律师"
+				},
+				{
+					"pagePath": "pages/user/user",
+					"iconPath": "static/tabbar/user.png",
+					"selectedIconPath": "static/tabbar/user_selected.png",
+					"text": "我的"
+				}
+			]
+		}
+}
