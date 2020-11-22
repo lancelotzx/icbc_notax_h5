@@ -1,3 +1,13 @@
+<!--
+mod by :wangjia  
+date: 20201120
+description: 工行扫码缴费项目首页，由公众号引入。
+TODO：进入本页面时，需要注意获取到用户的openid，需要工行通过get方式提供到参数页，或者提供微信
+公众号服务端api供我们使用获取到用户openid。
+
+1. 修正title为 非税缴费首页
+
+-->
 <template>
 	<view class="content">
 		<!-- 图片区域 -->
