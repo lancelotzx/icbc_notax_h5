@@ -18,13 +18,13 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		<u-row :gutter="0">
 			<u-col :span="6">
 				<u-card :show-head="false" :border-radius="18" box-shadow="7rpx 8rpx 20rpx #ddd">
-					<view slot="body">
+					<view slot="body" @click="goScan">
 						<view>
 							<text class="consult">扫码缴费</text>
 						</view>
 						<view>
 							<u-row :gutter="0">
-								<u-col :span="9" style="margin:0;padding:0;margin-bottom:20rpx;">
+								<u-col :span="9" style="margin:0;padding:0;margin-bottom:20rpx;" >
 									<text class="consult-sub">扫描票据二维码</text>
 								</u-col>
 								<u-col :span="2" style="margin:0;padding:0">
@@ -41,7 +41,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			</u-col>
 			<u-col :span="6">
 				<u-card :show-head="false" :border-radius="18" box-shadow="7rpx 8rpx 20rpx #ddd">
-					<view slot="body">
+					<view slot="body" @click="goFeisui">
 						<view>
 							<text class="consult">非税缴费</text>
 						</view>
@@ -67,7 +67,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		<u-row :gutter="0">
 			<u-col :span="6">
 				<u-card :show-head="false" :border-radius="18" box-shadow="7rpx 8rpx 20rpx #ddd">
-					<view slot="body">
+					<view slot="body" @click="goSchool">
 						<view>
 							<text class="consult">学杂费</text>
 						</view>
@@ -90,7 +90,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			</u-col>
 			<u-col :span="6">
 				<u-card :show-head="false" :border-radius="18" box-shadow="7rpx 8rpx 20rpx #ddd">
-					<view slot="body">
+					<view slot="body" @click="goHistory">
 						<view>
 							<text class="consult">缴费记录</text>
 						</view>
@@ -113,7 +113,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			</u-col>
 		</u-row>
 		  
-		<!-- 按类型咨询版块 -->
+		<!-- 按类型咨询版块 
 		<u-row style="margin-top:15rpx">
 			<u-col :span="12">
 				<u-section font-size="35" lineColor="#5b80f6" title="其他内容" :right="false"></u-section>
@@ -132,12 +132,12 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					</view>
 				</u-col>
 			</u-row>
-		</view>
+		</view>-->
 
 
 		
 		
-		<!-- 法律知识 -->
+		<!-- 法律知识 
 		<view style="margin-top:30rpx;">
 			<u-row>
 				<u-col :span="12">
@@ -150,7 +150,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				<u-cell-item title="法律知识"></u-cell-item>
 				<u-cell-item title="法律知识"></u-cell-item>
 			</u-cell-group>
-		</view>
+		</view>-->
 
 	</view>
 </template>
@@ -160,34 +160,60 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		data() {
 			return {
 				title: 'XX法律咨询',
-				caseTypeList: [{
-						id: 1,
-						caseTypeName: "婚姻家庭",
-						caseTypeIcon: "/static/images/casetype/married&family.png"
-					},
-					{
-						id: 2,
-						caseTypeName: "刑事案件",
-						caseTypeIcon: "/static/images/casetype/married&family.png"
-					},
-					{
-						id: 3,
-						caseTypeName: "劳动工伤",
-						caseTypeIcon: "/static/images/casetype/married&family.png"
-					},
-					{
-						id: 4,
-						caseTypeName: "债权债务",
-						caseTypeIcon: "/static/images/casetype/married&family.png"
-					}
-				]
+				// caseTypeList: [{
+				// 		id: 1,
+				// 		caseTypeName: "婚姻家庭",
+				// 		caseTypeIcon: "/static/images/casetype/married&family.png"
+				// 	},
+				// 	{
+				// 		id: 2,
+				// 		caseTypeName: "刑事案件",
+				// 		caseTypeIcon: "/static/images/casetype/married&family.png"
+				// 	},
+				// 	{
+				// 		id: 3,
+				// 		caseTypeName: "劳动工伤",
+				// 		caseTypeIcon: "/static/images/casetype/married&family.png"
+				// 	},
+				// 	{
+				// 		id: 4,
+				// 		caseTypeName: "债权债务",
+				// 		caseTypeIcon: "/static/images/casetype/married&family.png"
+				// 	}
+				// ]
 			}
 		},
 		onLoad() {
 
 		},
 		methods: {
-
+			goScan(){
+				uni.showToast({
+					title:"goScan"
+				})
+			},goFeisui(){
+				// uni.showToast({
+				// 	title:"goFeisui"
+				// })
+				// uni.navigateTo({
+				// 	url: '/pages/index/feishui',
+				// });
+				this.$u.route('/pages/index/feishui')
+			},
+			goSchool(){
+				// uni.showToast({
+				// 	title:"goSchool"
+				// })
+				// uni.navigateTo({
+				// 	url: '/pages/index/school',
+				// });
+				this.$u.route('/pages/index/school')
+			},
+			goHistory(){
+				uni.showToast({
+					title:"goHistory"
+				})
+			}
 		}
 	}
 </script>

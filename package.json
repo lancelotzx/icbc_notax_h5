@@ -4,12 +4,20 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": " vue-cli-service serve --max_old_space_size=4096",
+    "build": "vue-cli-service build",
+    "build:preview": "vue-cli-service build --mode preview",
+    "lint": "vue-cli-service lint",
+    "lint:nofix": "vue-cli-service lint --no-fix",
+    "test:unit": "vue-cli-service test:unit",
+    "postinstall": "opencollective-postinstall"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "uview-ui": "^1.7.2"
+    "uview-ui": "^1.7.2",
+    "weixin-jsapi": "^1.1.0"
   }
 }

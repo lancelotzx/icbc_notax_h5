@@ -12,6 +12,22 @@
 			}
 		}
 	    ,{
+			"path": "pages/index/feishui",
+			"style": {
+				"navigationBarBackgroundColor":"#cb5755",
+				"navigationBarTitleText":"非税缴费1",
+				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+		}
+	    ,{
+			"path": "pages/index/school",
+			"style": {
+				"navigationBarBackgroundColor":"#cb5755",
+				"navigationBarTitleText":"非税缴费2",
+				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+		}
+	    ,{
             "path" : "pages/lawyer-list/lawyer-list",
             "style" : {
 				"navigationBarBackgroundColor":"#fff",
@@ -59,24 +75,24 @@
 			"backgroundColor": "#FFFFFF",
 			"borderStyle": "black",
 			"list": [
-				{
-					"pagePath": "pages/index/index",
-					"iconPath": "static/tabbar/index.png",
-					"selectedIconPath": "static/tabbar/index_selected.png",
-					"text": "首页"
-				},
-				{
-					"pagePath": "pages/lawyer-list/lawyer-list",
-					"iconPath": "static/tabbar/lawyer.png",
-					"selectedIconPath": "static/tabbar/lawyer_selected.png",
-					"text": "找律师"
-				},
-				{
-					"pagePath": "pages/user/user",
-					"iconPath": "static/tabbar/user.png",
-					"selectedIconPath": "static/tabbar/user_selected.png",
-					"text": "我的"
-				}
+				// {
+				// 	"pagePath": "pages/index/index",
+				// 	"iconPath": "static/tabbar/index.png",
+				// 	"selectedIconPath": "static/tabbar/index_selected.png",
+				// 	"text": "首页"
+				// },
+				// {
+				// 	"pagePath": "pages/lawyer-list/lawyer-list",
+				// 	"iconPath": "static/tabbar/lawyer.png",
+				// 	"selectedIconPath": "static/tabbar/lawyer_selected.png",
+				// 	"text": "找律师"
+				// },
+				// {
+				// 	"pagePath": "pages/user/user",
+				// 	"iconPath": "static/tabbar/user.png",
+				// 	"selectedIconPath": "static/tabbar/user_selected.png",
+				// 	"text": "我的"
+				// }
 			]
 		}
 }
