@@ -1,0 +1,605 @@
+<template>
+
+	<view class="my_main">
+
+		<view class="in-head1">
+			<view class="in-info1">执收单位编码</view>
+			<input @focus="hideTabbar" @blur="showTabbar" type="text" class="contactInput1" placeholder="请输入执收单位编码" v-model="app_id"
+			 :value="app_id" disabled/>
+		</view>
+
+		<view class="in-head2">
+			<view class="in-info1">缴费通知书编号</view>
+			<input @focus="hideTabbar" @blur="showTabbar" type="text" class="contactInput1" placeholder="请输入缴费通知书编号" v-model="pay_code"
+			 :value="pay_code" disabled/>
+		</view>
+
+
+		<view class="in-head3">
+			<view class="in-info1">交款人姓名</view>
+			<input @focus="hideTabbar" @blur="showTabbar" type="text" class="contactInput1" placeholder="请输入手机号码" v-model="payer_name"
+			 :value="payer_name" disabled/>
+		</view>
+		<view class="in-head3">
+			<view class="in-info1">全书校验位</view>
+			<input @focus="hideTabbar" @blur="showTabbar" type="text" class="contactInput1" placeholder="" v-model="verify_byte"
+			 :value="verify_byte" disabled/>
+		</view>
+		
+		
+		<view class="in-head3">
+			<view class="in-info1">验证码</view>
+			<view class="in-head4">
+				<input @focus="hideTabbar" @blur="showTabbar" type="text" class="contactInput1" placeholder="请输入验证码" v-model="verify_code"
+				 :value="verify_code" />
+				 <image src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQyIDc5LjE2MDkyNCwgMjAxNy8wNy8xMy0wMTowNjozOSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTggKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkEyNzA4OEIyOTdEQTExRTlBNDdDRUVGNEFERTBGN0EyIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkEyNzA4OEIzOTdEQTExRTlBNDdDRUVGNEFERTBGN0EyIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QTI3MDg4QjA5N0RBMTFFOUE0N0NFRUY0QURFMEY3QTIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QTI3MDg4QjE5N0RBMTFFOUE0N0NFRUY0QURFMEY3QTIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz4mZZh7AAAIcUlEQVR42uRb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"></image>
+			</view>
+		</view>
+
+		<view class="in-btn" @click="goUpload">
+			<view class="in-text">提交</view>
+		</view>
+
+		<!-- <view  class="in-btn" @click="goUpload">
+				<view class="in-text">提交</view>
+			</view> 
+
+		<view class="in-fix-btn" v-if="tabbar" @click="goScan">
+			<image class="cardImg" src="/static/scan.png" />
+			<view class="in-record">扫码缴费</view>
+		</view>-->
+
+		<div class="dialog" v-show="isDialog">
+			<div class="mask" @click="cancel"></div>
+			<div class="dialog-content">
+				<h3 class="title">{{ modal.title }}</h3>
+				<p class="text">{{ modal.text }}</p>
+				<div class="btn-group">
+					<div class="cancelbtn" @click="cancel">{{ modal.cancelButtonText }}</div>
+					<div class="submitbtn" @click="submit">{{ modal.confirmButtonText }}</div>
+				</div>
+			</div>
+		</div>
+		<div class="dialogTel" v-show="isTel">
+			<div class="mask" @click="cancelTel"></div>
+			<div class="dialog-content">
+				<h3 class="title">{{ modalTel.title }}</h3>
+				<p class="text">{{ modalTel.text }}</p>
+				<input type="text" class="contactInput" placeholder="请输入手机号码" v-model="inputTel" :value="inputTel" />
+
+				<div class="btn-group">
+					<div class="cancelbtn" @click="cancelTel">{{ modalTel.cancelButtonText }}</div>
+					<div class="submitbtn" @click="submitTel">{{ modalTel.confirmButtonText }}</div>
+				</div>
+			</div>
+		</div>
+
+	</view>
+
+</template>
+<script>
+	// TODO 修复Android v3 加载过慢问题
+	// #ifdef APP-PLUS
+	var domModule = weex.requireModule('dom');
+	domModule.addRule('fontFace', {
+		'fontFamily': "uniicons",
+		'src': "url('/static/uni.ttf')"
+	});
+	// #endif
+	import Vue from 'vue'
+	//import reqwest from 'reqwest';
+	import Dialog from '@/components/dialog.vue'
+	import uLink from '@/components/uLink.vue'
+	//import wx from "weixin-jsapi";
+	//import axios from 'axios'
+	export default {
+		components: {
+			uLink
+		},
+		data() {
+			return {
+				isDialog: false,
+				isNeed: false,
+				isTel: false,
+				resolve: '',
+				reject: '',
+				promise: '', // 保存promise对象
+
+				tabbar: true,
+				windowHeight: '',
+				telId: '',
+				cardId: '',
+				noticeId: '',
+				inputTel: '',
+				pay_code:'',
+				payer_name:'',
+				app_id:'',
+				verify_code:'',
+				verify_byte:'',
+			};
+		},
+		onLoad() {
+			//读取 路由参数接收
+			this.pay_code = this.$route.query.pay_code;
+			this.payer_name = this.$route.query.payer_name;
+			this.app_id = this.$route.query.app_id;
+			
+			console.log("onLoad:" + this.pay_code + "," + this.app_id+ "," + this.payer_name)
+		},
+		onReady() {
+
+		},
+
+		open() {
+			uni.hideTabBar()
+		},
+		mounted() {
+
+		},
+
+		computed: {
+			modal: function() {
+				return {
+					title: '提示',
+					text: '是否需电子发票?',
+					cancelButtonText: '取 消',
+					confirmButtonText: '需 要',
+				}
+			},
+			modalTel: function() {
+				return {
+					title: '提示',
+					text: '接收电子票据手机号（选填）',
+					cancelButtonText: '取 消',
+					confirmButtonText: '确 定',
+				}
+			},
+		},
+		methods: {
+			goUpload() {
+				if (this.cardId == '') {
+					uni.showToast({
+						title: '请完善信息',
+						duration: 1000,
+						icon: 'none'
+					})
+					return;
+				}
+				if (this.noticeId == '') {
+					uni.showToast({
+						title: '请完善信息',
+						duration: 1000,
+						icon: 'none'
+					})
+					return;
+				}
+				if (this.telId == '') {
+					this.telId = "0";
+				}
+
+				// let value3 = '"input1":' + this.cardId + '",input2":' + this.noticeId + ',"input3":' + this.telId
+				// console.log('goUpload:' + value3)
+				// location.href =
+				// 	'https://enjoy.abchina.com/jf-open/payment/confirm/?from=nonetaxepayment.van-soft.com/bill&userInput={' + value3 +
+				// 	'}&codEpay=JF-EPAY2017122515280&showBill=0'
+				let value3 = '"input1":"' + this.cardId + '","input2":"' + this.noticeId + '","input3":"' + this.telId + '"'
+				console.log('goUpload:' + value3)
+				location.href =
+					'https://enjoy.abchina.com/jf-open/payment/confirm/?from=nonetaxepayment.van-soft.com/bill&userInput=%7B' + value3 +
+					'%7D&codEpay=JF-EPAY2017122515280&showBill=1'
+			},
+			showTabbar() {
+				this.tabbar = true;
+			},
+			hideTabbar() {
+				this.tabbar = false;
+			},
+			goScan() {
+				this.isDialog = true
+			},
+			goFeisui() {
+				this.isDialog = true
+			},
+			goSchool() {
+				this.isDialog = true
+			},
+			//确定,将promise断定为完成态
+			submit() {
+				this.isDialog = false
+				this.isTel = true
+			},
+			// 取消,将promise断定为reject状态
+			cancel() {
+				this.isDialog = false
+			},
+			submitTel() {
+				if (this.inputTel == '') {
+					uni.showToast({
+						title: '请填写正确手机号！',
+						duration: 1000,
+						icon: 'none'
+					});
+					return;
+				} else {
+					if (this.inputTel.length != 11) {
+						uni.showToast({
+							title: '请填写正确手机号！',
+							duration: 1000,
+							icon: 'none'
+						});
+						return;
+					}
+				}
+				this.isTel = false
+				this.wxScanCode();
+				// uni.showToast({
+				// 	title: 'OK',
+				// 	duration: 1000
+				// })
+			},
+			// 取消,将promise断定为reject状态
+			cancelTel() {
+				this.isTel = false
+				// uni.showToast({
+				// 	title: '取消',
+				// 	duration: 1000
+				// })
+			},
+			wxScanCode() {
+				var that = this;
+				console.log('wxScanCode');
+				wx.scanQRCode({
+					needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+					scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+					success: function(res) {
+						//alert('success'+res);
+						var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+						console.log(result);
+						var scans = result.split('|');
+						// let value3 = '"input1":' + scans[1] + '",input2":' + scans[2]+ ',"input3":' + this.inputTel
+						// console.log('goUpload:' + value3)
+						// location.href =
+						// 	'https://enjoy.abchina.com/jf-open/payment/confirm/?from=nonetaxepayment.van-soft.com/bill&userInput={' + value3 +
+						// 	'}&codEpay=JF-EPAY2017122515280&showBill=0'
+
+						let value3 = '"input1":"' + scans[1] + '","input2":"' + scans[2] + '","input3":"' + that.inputTel + '"'
+						console.log('goUpload:' + value3)
+						location.href =
+							'https://enjoy.abchina.com/jf-open/payment/confirm/?from=nonetaxepayment.van-soft.com/bill&userInput=%7B' +
+							value3 +
+							'%7D&codEpay=JF-EPAY2017122515280&showBill=1'
+					},
+					error: function(res) {
+						//alert('error'+res);
+						console.log(res);
+						uni.showToast({
+							title: 'error:' + res.errMsg,
+							duration: 1500
+						});
+					}
+				});
+			},
+			//显示confirm弹出,并创建promise对象，给父组件调用
+			confirm() {
+				this.isDialog = false
+				// uni.showToast({
+				// 	title: '确认',
+				// 	duration: 1000
+				// })
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	page {
+		background-color: #F4F5F6;
+		height: 100%;
+		font-size: 28rpx;
+		line-height: 1.8;
+		background: url(/static/bg.8375ff9.png) no-repeat;
+		background-size: 100% 100%;
+		overflow: hidden;
+	}
+
+	.my_main {
+		position: relative;
+		background-color: #EEEEEE;
+		width: 100%;
+		height: 100vh;
+		min-height: 650px
+	}
+
+	.in-head1 {
+		background-color: #FFFFFF;
+		width: 100%;
+		height: 12%;
+		padding-left: 20px;
+		top: 2%;
+		margin-bottom: 2%;
+	}
+
+	.cardImg {
+		width: 35px;
+		height: 35px;
+	}
+
+	.in-head2 {
+		background-color: #FFFFFF;
+		width: 100%;
+		height: 12%;
+		padding-left: 20px;
+		margin-top: 2%;
+	}
+
+	.in-btn {
+		width: 95%;
+		height: 40px;
+		margin-top: 5%;
+		margin-left: 50%;
+		transform: translate3d(-50%, 0, 0);
+		//background: #32c7b4;
+		background:rgba(178,0,33, .6);
+		//box-shadow: 0 6px 32px 3px rgba(178,0,33, .6);
+		border-radius: 10px;
+		border: none;
+	}
+
+	.in-text {
+		font-size: 14px;
+		font-family: PingFang-SC-Bold;
+		font-weight: 500;
+		height: 40px;
+		color: #FFFFFF;
+		text-align: center;
+		justify-content: center;
+	}
+
+	.in-head3 {
+		background-color: #FFFFFF;
+		width: 100%;
+		height: 12%;
+		padding-left: 20px;
+		margin-top: 2%;
+	}
+	.in-head4{
+		display: flex;
+		flex-direction: row;
+		  width: 100%;
+	}
+	.in-head4 input{
+		width: 70%;
+	}
+	.in-head4 image{
+		width: 60px;
+		height: 30px;
+	}
+	.in-info1 {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		font-size: 16px;
+		background-color: #FFFFFF;
+	}
+
+	.util {
+		padding: 0;
+		margin: 0;
+		height: 100%;
+		width: 100%;
+		overflow: hidden;
+	}
+
+	.in-record {
+		font-size: 16px;
+		font-family: PingFang-SC-Bold;
+		font-weight: 500;
+		color: #fff;
+	}
+
+	.contactInput {
+		width: 100%;
+		font-size: 14px;
+		height: 35px;
+		background-color: #FFFFFF;
+		border: 1px solid;
+		border-color: #BBBBBB;
+		border-radius: 5px;
+		text-align: start;
+		margin-top: 10px;
+		padding-left: 10px;
+	}
+
+	.in-fix-btn {
+		width: 100px;
+		height: 100px;
+		background: linear-gradient(150deg, rgba(255, 98, 50, .97), rgba(254, 61, 61, .97));
+		box-shadow: 0 1px 10px 0 rgba(248, 55, 59, .2);
+		border-radius: 50%;
+		display: -ms-flexbox;
+		display: flex;
+		-ms-flex-direction: column;
+		flex-direction: column;
+		-ms-flex-align: center;
+		align-items: center;
+		-ms-flex-pack: center;
+		justify-content: center;
+		font-size: 15px;
+		font-family: PingFang-SC-Bold;
+		font-weight: 700;
+		color: #fffefe;
+		line-height: 22px;
+		position: fixed;
+		left: 50%;
+		top: 60%;
+		transform: translate3d(-50%, 0, 0);
+		margin-top: 10px;
+	}
+
+	.contactInputText {
+		height: 100%;
+		width: 60%;
+		outline: none;
+	}
+
+	.dialogTel {
+		position: relative;
+
+		.dialog-content {
+			position: fixed;
+			box-sizing: border-box;
+			padding: 20px;
+			width: 80%;
+			min-height: 260px;
+			left: 50%;
+			top: 33%;
+			transform: translate(-50%, -50%);
+			border-radius: 5px;
+			background: #fff;
+			z-index: 0;
+
+			.title {
+				font-size: 18px;
+				font-weight: 400;
+				line-height: 30px;
+			}
+
+			.text {
+				margin-top: 30px;
+				font-size: 14px;
+				line-height: 30px;
+				color: #555;
+			}
+
+			.btn-group {
+				display: flex;
+				position: absolute;
+				right: 10px;
+				bottom: 10px;
+				line-height: 35px;
+				················height: 35px;
+
+				.cancelbtn {
+					font-size: 14px;
+					width: 65px;
+					height: 35px;
+					background-color: #FFFFFF;
+					border: 1px solid;
+					border-color: #BBBBBB;
+					border-radius: 5px;
+					text-align: center;
+					margin-right: 10px;
+					// &:last-child {
+					// 	color: #76D49B;
+					// }
+				}
+
+				.submitbtn {
+					font-size: 14px;
+					width: 65px;
+					height: 35px;
+					background-color: #19a4ff;
+					border: 1px solid;
+					border-color: #BBBBBB;
+					border-radius: 5px;
+					color: #FFFFFF;
+					text-align: center;
+
+					&:last-child {
+						color: #FFFFFF;
+					}
+				}
+			}
+		}
+
+		.mask {
+			position: fixed;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			z-index: 0;
+			background: rgba(0, 0, 0, .5);
+		}
+	}
+
+	.dialog {
+		position: relative;
+
+		.dialog-content {
+			position: fixed;
+			box-sizing: border-box;
+			padding: 20px;
+			width: 80%;
+			min-height: 200px;
+			left: 50%;
+			top: 30%;
+			transform: translate(-50%, -50%);
+			border-radius: 5px;
+			background: #fff;
+			z-index: 0;
+
+			.title {
+				font-size: 18px;
+				font-weight: 400;
+				line-height: 30px;
+			}
+
+			.text {
+				margin-top: 30px;
+				font-size: 14px;
+				line-height: 30px;
+				color: #555;
+			}
+
+			.btn-group {
+				display: flex;
+				position: absolute;
+				right: 10px;
+				bottom: 10px;
+				line-height: 35px;
+				················height: 35px;
+
+				.cancelbtn {
+					font-size: 14px;
+					width: 65px;
+					height: 35px;
+					background-color: #FFFFFF;
+					border: 1px solid;
+					border-color: #BBBBBB;
+					border-radius: 5px;
+					text-align: center;
+					margin-right: 10px;
+					// &:last-child {
+					// 	color: #76D49B;
+					// }
+				}
+
+				.submitbtn {
+					font-size: 14px;
+					width: 65px;
+					height: 35px;
+					background-color: #19a4ff;
+					border: 1px solid;
+					border-color: #BBBBBB;
+					border-radius: 5px;
+					color: #FFFFFF;
+					text-align: center;
+
+					&:last-child {
+						color: #FFFFFF;
+					}
+				}
+			}
+		}
+
+		.mask {
+			position: fixed;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			z-index: 0;
+			background: rgba(0, 0, 0, .5);
+		}
+	}
+</style>

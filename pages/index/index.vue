@@ -184,7 +184,40 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			}
 		},
 		onLoad() {
-
+			var url = "http://www.onetwo1.top/getSign";
+			this.$u.get(url, {
+				params: {
+					tokenUrl: location.href.split('#')[0]
+				}
+			}).then((response) => {
+				// uni.showToast({
+				// 	title: 'success:' + response.data.signature + ',location.href',
+				// 	duration: 2000,
+				// 	icon: 'none'
+				// });
+				//let a = JSON.parse(response.data);
+				console.log("请求到的数据：" + response.data);
+				this.appid = response.data.appId
+				this.timestamp = response.data.timestamp
+				this.nonceStr = response.data.nonceStr
+				this.signature = response.data.signature
+				console.log("请求到的数据：" + this.timestamp + "," + this.nonceStr + "," + this.signature);
+				wx.config({
+					debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					appId: this.appid, // 必填，公众号的唯一标识
+					timestamp: this.timestamp, // 必填，生成签名的时间戳
+					nonceStr: this.nonceStr, // 必填，生成签名的随机串
+					signature: this.signature, // 必填，签名
+					jsApiList: ['scanQRCode'] // 必填，需要使用的JS接口列表
+				});
+			}).catch((error) => {
+				console.log(error);
+				// uni.showToast({
+				// 	title: 'error:' + error,
+				// 	duration: 2000,
+				// 	icon: 'none'
+				// });
+			})
 		},
 		methods: {
 			goScan(){
