@@ -4,7 +4,7 @@ import uView from 'uview-ui'
 
 import httpInterceptor from '@/common/http.interceptor.js'
 import navbarConfig from '@/common/navbar.config.js'
-import wx from "weixin-jsapi";
+// import wx from "weixin-jsapi";
 // 全局方法注入
 Vue.prototype.$getUser = ()=>{
 	return uni.getStorageSync("USERDATA");

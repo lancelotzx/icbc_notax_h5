@@ -6,76 +6,40 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarBackgroundColor":"#cb5755",
-				"navigationBarTitleText":"非税缴费",
-				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			
 			}
 		}
 	    ,{
 			"path": "pages/index/feishui",
 			"style": {
-				"navigationBarBackgroundColor":"#cb5755",
-				"navigationBarTitleText":"非税缴费1",
-				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+				
 			}
 		}
 	    ,{
 			"path": "pages/index/school",
 			"style": {
-				"navigationBarBackgroundColor":"#cb5755",
-				"navigationBarTitleText":"非税缴费2",
-				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+				
 			}
 		}
 		,{
 			"path": "pages/index/ticket",
 			"style": {
-				"navigationBarBackgroundColor":"#b2001a",
-				"navigationBarTitleText":"非税缴费3",
-				"navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+				
 			}
 		}
 	    ,{
-            "path" : "pages/lawyer-list/lawyer-list",
+            "path" : "pages/charge-history/index",
             "style" : {
-				"navigationBarBackgroundColor":"#fff",
-				"navigationBarTitleText":"找律师",
-				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+				
 			}
         }
-        ,{
-            "path" : "pages/user/user",
-            "style" : {
-				"navigationStyle":"custom"
-			}
-        }
-        ,{
-            "path" : "pages/lawyer-info/lawyer-info",
-            "style" : {
-				"navigationBarBackgroundColor":"#fff",
-				"navigationBarTitleText":"律师主页",
-				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
-			}
-        }
-        ,{
-            "path" : "pages/order-submit/order-submit",
-            "style" : {
-				"navigationBarBackgroundColor":"#fff",
-				"navigationBarTitleText":"图文专问",
-				"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
-			}
-        }
-        ,{
-            "path" : "pages/login/login",
-            "style" : {
-            	"navigationBarBackgroundColor":"#fff",
-            	"navigationBarTitleText":"用户登录",
-            	"navigationBarTextStyle": "black" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
-            }
-        }
+        
     ],
 	"globalStyle": {
-		"navigationBarTitleText": "法律平台"
+		"navigationBarTitleText": "法律平台",
+		"app-plus":{
+		    			"titleNView":false
+		    		}
 	},
 	"tabBar": {
 			"color": "#909399",
