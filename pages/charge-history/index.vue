@@ -1,23 +1,37 @@
+<!--
+@author:wangjia
+@date:20201219
+@description: 将页面适配为新款UI
+-->
+
 <template>
 	<view>
-		<u-navbar title="我的" back-icon-name="setting-fill" back-icon-color="#000" title-color="#000" :border-bottom="false"></u-navbar>
-		<view style="width:100%;padding-top:20rpx;">
-			<u-row :gutter="0" >
-				<u-col :span="4" :offset="4">
-					<view style="text-align: center;">
-						<u-avatar size="150" src="http://pic2.sc.chinaz.com/Files/pic/pic9/202002/hpic2119_s.jpg"></u-avatar>
+		
+		<view style="width:100%;">
+			<!--wangjia:使用absolute position可以充当背景-->
+			<view style="margin:0;padding:0;">
+				<image src="/static/images/his-01.png" mode="widthFix" style="width:100%; display: block;position: absolute;
+				  z-index: -1;">
+				</image>
+			</view>
+			<u-row :gutter="1" >
+				<u-col  :offset="1">
+					<view style="margin:0;padding:0;padding-top: 82rpx;" @click="goBack">
+						<image src="/static/images/his-02.png" mode="widthFix" style="width:5%; display: block;position: absolute;
+					"></image>
+					</view>
+				</u-col>
+				
+				<u-col  :offset="4">
+					<view style="margin:0;padding:0; padding-left: 30rpx; padding-bottom: 120rpx; z-index: 2;" >
 						<view>
-							<text>用户微信昵称</text>
-							<text>18153886404</text>
-						</view>
-						<view>
-							<u-button type="primary" size="mini" shape="circle" :ripple="true">
-								<u-icon size="25" name="man-add" style="margin-right:5rpx;"></u-icon> 律师认证
-							</u-button>
+							<text class="his-title">缴费记录</text>
 						</view>
 					</view>
 				</u-col>
 			</u-row>
+			
+			<!--
 			<view style="margin-top:30rpx;padding-bottom:15rpx;">
 				<u-row>
 					<u-col :span="12">
@@ -25,6 +39,7 @@
 					</u-col>
 				</u-row>
 			</view>
+			-->
 			
 		</view>
 		<view class="order-list-bg">
@@ -56,13 +71,17 @@
 		onShow(){
 			let _this = this;
 			console.log("I'm Loaded") 
-			
+			/*
 			if(!this.$getUser())
 			{
 				this.showNoLoginModal = true;
 			}
+			*/
 		},
 		methods:{
+			goBack(){
+				this.$u.route('/pages/index/index')
+			},
 			cancelLogin()
 			{
 				this.showNoLoginModal = false;
@@ -90,6 +109,13 @@
 		margin-top:10rpx;
 	}
 	
-	
+    .his-title{
+		
+		font-size: 23px;
+		font-family: SourceHanSansSC-Regular;
+		//line-height: 53px;
+		color: #FFFFFF;
+		opacity: 1;
+	}	
 	
 </style>
