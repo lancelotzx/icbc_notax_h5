@@ -42,8 +42,11 @@
 			-->
 			
 		</view>
-		<view class="order-list-bg">
-			<order-info v-for="(order,orderIndex) in 10" :key="orderIndex"></order-info>
+		<view class="his-main-bg">
+			 <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
+			                @scroll="scroll">
+			                    <order-info v-for="(order,orderIndex) in 10" :key="orderIndex"></order-info>
+			                </scroll-view>		
 		</view>
 		
 		
@@ -63,6 +66,11 @@
 		
 		data() {
 			return {
+				scrollTop: 0,
+				old: {
+						scrollTop: 0
+				},
+				            
 				showNoLoginModal:false,
 				content:"登录后才可访问更多信息哦"
 				
@@ -82,6 +90,16 @@
 			goBack(){
 				this.$u.route('/pages/index/index')
 			},
+			upper: function(e) {
+				console.log(e)
+			},
+			lower: function(e) {
+				console.log(e)
+			},
+			scroll: function(e) {
+				console.log(e)
+				this.old.scrollTop = e.detail.scrollTop
+			},
 			cancelLogin()
 			{
 				this.showNoLoginModal = false;
@@ -100,6 +118,9 @@
 </script>
 
 <style lang="scss">
+	.scroll-Y {
+			height: 1000rpx;
+		}
 	.order-list-bg{
 		background-color: #eef5fe;
 		padding-top:20rpx;
@@ -117,5 +138,16 @@
 		color: #FFFFFF;
 		opacity: 1;
 	}	
+	
+	.his-main-bg{
+		//width: 680px;
+		//height: 1194px;
+		padding-top: 100rpx;
+		padding-left: 100rpx;
+		background: #eef5fe;
+		box-shadow: 0px -8rpx 24rpx rgba(0, 0, 0, 0.08);
+		opacity: 1;
+		border-radius: 180rpx 0rpx 0rpx 0rpx;
+	}
 	
 </style>
