@@ -12,16 +12,15 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 	<view class="content">
 		<!-- 图片区域 -->
 		<view style="margin:0;padding:0;padding-top:-10rpx">
-			<image src="/static/images/bg.jpg" mode="widthFix" style="width:100%;display: block;"></image>
-		<text style="margin-top:-100rpx">扫码缴费1</text>
-		<text style="margin-top:-50rpx">扫码缴费2</text>
+			<image src="/static/images/1.png" mode="widthFix" style="width:100%;display: block;"></image>
 		</view>
 		<!-- 咨询区域 -->
 		<u-row :gutter="0">
 			<u-col :span="6">
 				<u-card :show-head="false" :border-radius="18" box-shadow="7rpx 8rpx 20rpx #ddd">
 					<view slot="body" @click="goScan">
-						<view>
+						<image src="/static/images/scan_pay.png" mode="widthFix" style="width:100%;display: block;" @click="showInTroToast"></image>
+						<!-- <view>
 							<text class="consult">扫码缴费</text>
 						</view>
 						<view>
@@ -36,7 +35,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 								</u-col>
 							</u-row>
 
-						</view>
+						</view> -->
 					</view>
 
 				</u-card>
@@ -44,7 +43,8 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			<u-col :span="6">
 				<u-card :show-head="false" :border-radius="18" box-shadow="7rpx 8rpx 20rpx #ddd">
 					<view slot="body" @click="goFeisui">
-						<view>
+						<image src="/static/images/region_pay.png" mode="widthFix" style="width:100%;display: block;"></image>
+						<!-- <view>
 							<text class="consult">非税缴费</text>
 						</view>
 						<view>
@@ -59,7 +59,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 								</u-col>
 							</u-row>
 
-						</view>
+						</view> -->
 					</view>
 
 				</u-card>
@@ -67,30 +67,36 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		</u-row>
 		
 		<u-row :gutter="0">
-			<u-col :span="6">
+			<u-col :span="12">
 				<u-card :show-head="false" :border-radius="18" box-shadow="7rpx 8rpx 20rpx #ddd">
 					<view slot="body" @click="goSchool">
-						<view>
-							<text class="consult">学杂费</text>
-						</view>
-						<view>
+						 <view  class="pay_view"  :style="{background: 'url('+imageURL+')',backgroundSize: '100% 100%'}">
+							
+							<text class="pay_text">校园非税缴费入口</text>
+							<view  class="pay_image">
+								<text class="pay_introd">缴费说明</text>
+								<image src="/static/images/about.png" mode="widthFix" style="width:30rpx;"></image>
+							</view>
+							
+						</view> 
+						<!-- <view>
 							<u-row :gutter="0">
 								<u-col :span="9" style="margin:0;padding:0;margin-bottom:20rpx;">
 									<text class="consult-sub">通过身份证缴费</text>
 								</u-col>
-								<u-col :span="2" style="margin:0;padding:0">
+								 <u-col :span="2" style="margin:0;padding:0">
 									<view style="position:absolute;right:5rpx;bottom:5rpx">
 										<image src="/static/images/chat_consult.png" mode="widthFix" style="width:110rpx;"></image>
 									</view>
-								</u-col>
+								</u-col> 
 							</u-row>
 		
-						</view>
+						</view> -->
 					</view>
 		
 				</u-card>
 			</u-col>
-			<u-col :span="6">
+			<!-- <u-col :span="6">
 				<u-card :show-head="false" :border-radius="18" box-shadow="7rpx 8rpx 20rpx #ddd">
 					<view slot="body" @click="goHistory">
 						<view>
@@ -112,7 +118,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					</view>
 		
 				</u-card>
-			</u-col>
+			</u-col> -->
 		</u-row>
 		  
 		<!-- 按类型咨询版块 
@@ -162,6 +168,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		data() {
 			return {
 				title: 'XX法律咨询',
+				imageURL: '/static/images/bg.png'
 				// caseTypeList: [{
 				// 		id: 1,
 				// 		caseTypeName: "婚姻家庭",
@@ -222,6 +229,11 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			})
 		},
 		methods: {
+			showInTroToast(){
+				uni.showToast({
+					title:"说明"
+				})
+			},
 			goScan(){
 				uni.showToast({
 					title:"goScan"
@@ -264,7 +276,32 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		font-size: $consultTitleRpx;
 		font-weight: $consultTitleWeight;
 	}
-
+	.pay_text{
+		padding-top: 20px ;
+		padding-left: 5px;
+		font-size: 20px;
+		font-family: SourceHanSansSC-Regular;
+		line-height: 48px;
+		color: #FFFFFF;
+		opacity: 1;
+	}
+	.pay_introd{
+		padding-left: 5px;
+		font-size: 12px;
+		font-family: SourceHanSansSC-Regular;
+		color: #FFFFFF;
+		opacity: 1;
+	}
+	.pay_image{
+		display: flex;
+		align-items: center
+	}
+	.pay_view{
+		height: 140px;
+		display: flex;
+		flex-direction: column;
+		
+	}
 	.consult-sub {
 		font-size: $consultSubTitleRpx;
 		color: $consultSubTitleColor;

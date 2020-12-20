@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": " vue-cli-service serve --max_old_space_size=4096",
+    "serve": "vue-cli-service serve --max_old_space_size=4096",
     "build": "vue-cli-service build",
     "build:preview": "vue-cli-service build --mode preview",
     "lint": "vue-cli-service lint",
@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "opencollective-postinstall": "^2.0.3",
     "uview-ui": "^1.7.2",
     "weixin-jsapi": "^1.1.0"
   }
