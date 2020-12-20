@@ -34,7 +34,21 @@
 			
 			
 		</view>
-		<view class="bg-subtitle"></view>
+		<view class="bg-subtitle">
+			<view class="wrap">
+				<u-form :model="form" ref="uForm">
+					<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" left-icon="account" label-width="120" label-position="top" label="执收单位编码" prop="charger_id">
+						<u-input :border="border" placeholder="请输入执收单位编码" v-model="model.charger_id" type="text"></u-input>
+					</u-form-item>
+					
+					
+					<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" left-icon="order" label-position="top" label="缴费通知书编号" prop="order_id">
+						<u-input :password-icon="true" :border="border" type="text" v-model="model.order_id" placeholder="请输入缴费通知书编号"></u-input>
+					</u-form-item>
+				</u-form>
+			</view>
+			
+		</view>
 		<!--
 		<view >
 			 <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
@@ -44,10 +58,7 @@
 		</view>
 		-->
 		
-		
-		
-		<u-modal v-model="showNoLoginModal" :show-cancel-button="true" :content="content" @cancel="cancelLogin()" @confirm="confirmLogin()"></u-modal>
-		
+
 		
 	</view>
 </template>
@@ -62,6 +73,11 @@
 		
 		data() {
 			return {
+				model: {
+					charger_id: '',
+					order_id: '',
+					sex: ''
+				},
 				showSel:false,
 				selButtonValue: 2020,
 				yearlist:[
@@ -150,12 +166,15 @@
 </script>
 
 <style lang="scss">
+	.wrap {
+		padding: 30rpx;
+	}
 	.bg-subtitle {
 		width: 750rpx;
 		height: 900rpx;
 		position: absolute;
-		padding-top: 100rpx;
-		padding-left: 20rpx;
+		padding-top: 10rpx;
+		padding-left: 40rpx;
 		
 		background: #FFFFFF;
 		box-shadow: 0px 2px 24px rgba(0, 0, 0, 0.08);
