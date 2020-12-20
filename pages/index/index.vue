@@ -12,7 +12,9 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 	<view class="content">
 		<!-- 图片区域 -->
 		<view style="margin:0;padding:0;padding-top:-10rpx">
-			<image src="/static/images/banner.png" mode="widthFix" style="width:100%;display: block;"></image>
+			<image src="/static/images/bg.jpg" mode="widthFix" style="width:100%;display: block;"></image>
+		<text style="margin-top:-100rpx">扫码缴费1</text>
+		<text style="margin-top:-50rpx">扫码缴费2</text>
 		</view>
 		<!-- 咨询区域 -->
 		<u-row :gutter="0">
