@@ -245,7 +245,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				// uni.navigateTo({
 				// 	url: '/pages/index/feishui',
 				// });
-				this.$u.route('/pages/index/feishui')
+				this.$u.route('/pages/charge-manual/index')
 			},
 			goSchool(){
 				// uni.showToast({
