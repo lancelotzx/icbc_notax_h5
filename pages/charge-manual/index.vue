@@ -43,15 +43,26 @@
 					<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" left-icon="order" label-position="top" label="缴费通知书编号" prop="order_id">
 						<u-input :password-icon="true" :border="border" type="text" v-model="model.order_id" placeholder="请输入缴费通知书编号"></u-input>
 					</u-form-item>
-					<u-form-item :label-position="labelPosition" label="是否接收电子票据短信" prop="remember" label-width="320">
+					<u-form-item   label="是否接收电子票据短信" prop="remember" label-width="320">
 						<u-switch v-model="model.remember" slot="right"></u-switch>
 					</u-form-item>
 					<template v-if="model.remember">
-						<view>test 为 true 时显示</view>
+						<view>
+							<u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}" right-icon="kefu-ermai" label-position="top" label="手机号码" prop="phone" label-width="150">
+								<u-input :border="border" placeholder="请输入手机号" v-model="model.phone" type="number"></u-input>
+							</u-form-item>
+							<u-form-item label-position="top" label="验证码" prop="code" label-width="150rpx">
+								<u-input :border="border" placeholder="请输入验证码" v-model="model.code" type="text"></u-input>
+								<u-button slot="right" type="warning " size="mini" @click="getCode">{{codeTips}}</u-button>
+							</u-form-item>
+						</view>
 					</template>
 					<template v-else>
 						<view></view>
 					</template>
+					<u-button @click="submit">提交</u-button>
+						
+					<u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
 				</u-form>
 			</view>
 			
@@ -74,9 +85,12 @@
 				model: {
 					charger_id: '',
 					order_id: '',
+					phone:'',
+					code:'',
 					remember: false,
 				},
-				
+				codeTips: '',
+				border: false,
 				
 			};
 		},
@@ -85,8 +99,29 @@
 			
 		},
 		methods:{
+			// 获取验证码
+			getCode() {
+				if(this.$refs.uCode.canGetCode) {
+					// 模拟向后端请求验证码
+					uni.showLoading({
+						title: '正在获取验证码',
+						mask: true
+					})
+					setTimeout(() => {
+						uni.hideLoading();
+						// 这里此提示会被this.start()方法中的提示覆盖
+						this.$u.toast('验证码已发送');
+						// 通知验证码组件内部开始倒计时
+						this.$refs.uCode.start();
+					}, 2000);
+				} else {
+					this.$u.toast('倒计时结束后再发送');
+				}
+			},
 			
-			
+			codeChange(text) {
+				this.codeTips = text;
+			},
 			goBack(){
 				this.$u.route('/pages/index/index')
 			}
