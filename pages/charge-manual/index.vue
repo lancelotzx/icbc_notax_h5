@@ -2,6 +2,12 @@
 @author:wangjia
 @date:20201221
 @description: 按新UI进行市县级非税缴费页面设计
+ 
+              20201222 完成UI编制，进行JS编码设计
+			  1.form提交内容定制
+			    元素 1. 执收单位编码charger_id
+				元素 2. 缴费通知书编号order_id
+				元素 3. 手机号码（可选）phone
 -->
 
 <template>
@@ -36,7 +42,7 @@
 		</view>
 		<view class="bg-subtitle">
 			<view class="wrap">
-				<u-form :model="form" ref="uForm">
+				<u-form :model="model" ref="uForm"  :rules="rules" :errorType="errorType">
 					<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" left-icon="account" label-width="120" label-position="top" label="执收单位编码" prop="charger_id">
 						<u-input :border="border" placeholder="请输入执收单位编码" v-model="model.charger_id" type="text"></u-input>
 					</u-form-item>	
@@ -91,14 +97,89 @@
 				},
 				codeTips: '',
 				border: false,
-				
+				errorType: ['message'],
+				rules: {
+							charger_id: [
+								{
+									required: true,
+									message: '请输入执收单位编码',
+									trigger: 'blur' ,
+								},
+								{
+									min: 12,
+									max: 12,
+									message: '执收单位编码为12位',
+									trigger: ['change','blur'],
+								},
+							],
+							
+							order_id: [
+								{
+									required: true,
+									message: '请输入缴款通知书编号',
+									trigger: 'blur' ,
+								},
+								{
+									min: 13,
+									max: 18,
+									message: '缴款通知书长度不正确',
+									trigger: ['change','blur'],
+								},
+							],
+							
+							phone: [
+								{
+									required: true,
+									message: '请输入手机号',
+									trigger: ['change','blur'],
+								},
+								{
+									validator: (rule, value, callback) => {
+										// 调用uView自带的js验证规则，详见：https://www.uviewui.com/js/test.html
+										return this.$u.test.mobile(value);
+									},
+									message: '手机号码不正确',
+									// 触发器可以同时用blur和change，二者之间用英文逗号隔开
+									trigger: ['change','blur'],
+								}
+							],
+							code: [
+								{
+									required: true,
+									message: '请输入验证码',
+									trigger: ['change','blur'],
+								},
+								{
+									validator: (rule, value, callback) => {
+										// 调用uView自带的js验证规则，详见：https://www.uviewui.com/js/test.html
+										return this.$u.test.code(value, 4);
+									},
+									message: '验证码不正确',
+									// 触发器可以同时用blur和change，二者之间用英文逗号隔开
+									trigger: ['change','blur'],
+								}
+							],
+						},
 			};
 		},
 		onShow(){
 			let _this = this;
 			
 		},
+		onReady() {
+			this.$refs.uForm.setRules(this.rules);
+		},
 		methods:{
+			submit() {
+				this.$refs.uForm.validate(valid => {
+					if (valid) {
+						// if(!this.model.agreement) return this.$u.toast('请勾选协议');
+						console.log('验证通过');
+					} else {
+						console.log('验证失败');
+					}
+				});
+			},
 			// 获取验证码
 			getCode() {
 				if(this.$refs.uCode.canGetCode) {
