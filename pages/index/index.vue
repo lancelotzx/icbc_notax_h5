@@ -17,7 +17,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		<!-- 咨询区域 -->
 		<u-row :gutter="0">
 			<u-col :span="6">
-				<u-card :show-head="false" :border-radius="18" box-shadow="7rpx 8rpx 20rpx #ddd">
+				<u-card :show-head="false" :border="false" padding="0" margin="0rpx 10rpx 10rpx 30rpx" >
 					<view slot="body" @click="goScan">
 						<image src="/static/images/scan_pay.png" mode="widthFix" style="width:100%;display: block;" @click="showInTroToast"></image>
 						<!-- <view>
@@ -41,7 +41,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				</u-card>
 			</u-col>
 			<u-col :span="6">
-				<u-card :show-head="false" :border-radius="18" box-shadow="7rpx 8rpx 20rpx #ddd">
+				<u-card :show-head="false" :border="false" padding="0" margin="0rpx 30rpx 10rpx 10rpx">
 					<view slot="body" @click="goFeisui">
 						<image src="/static/images/region_pay.png" mode="widthFix" style="width:100%;display: block;"></image>
 						<!-- <view>
@@ -68,7 +68,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		
 		<u-row :gutter="0">
 			<u-col :span="12">
-				<u-card :show-head="false" :border-radius="18" box-shadow="7rpx 8rpx 20rpx #ddd">
+				<u-card :show-head="false" :border="false" padding="0">
 					<view slot="body" @click="goSchool">
 						 <view  class="pay_view"  :style="{background: 'url('+imageURL+')',backgroundSize: '100% 100%'}">
 							
