@@ -254,7 +254,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				// uni.navigateTo({
 				// 	url: '/pages/index/school',
 				// });
-				this.$u.route('/pages/index/school')
+				this.$u.route('/pages/charge-school/index')
 			},
 			goHistory(){
 				uni.showToast({
