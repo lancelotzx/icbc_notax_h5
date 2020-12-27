@@ -19,7 +19,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			<u-col :span="6">
 				<u-card :show-head="false" :border="false" padding="0" margin="0rpx 10rpx 10rpx 30rpx" >
 					<view slot="body" @click="goScan">
-						<image src="/static/images/scan_pay.png" mode="widthFix" style="width:100%;display: block;" @click="showInTroToast"></image>
+						<image src="/static/images/scan_pay.png" mode="widthFix" style="width:100%;display: block;" @click="goScan()"></image>
 					</view>
 
 				</u-card>
@@ -57,6 +57,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 </template>
 
 <script>
+	import wx from "weixin-jsapi";
 	export default {
 		data() {
 			return {
@@ -77,11 +78,11 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				// 	icon: 'none'
 				// });
 				//let a = JSON.parse(response.data);
-				console.log("请求到的数据：" + response.data);
-				this.appid = response.data.appId
-				this.timestamp = response.data.timestamp
-				this.nonceStr = response.data.nonceStr
-				this.signature = response.data.signature
+				console.log("请求到的数据：" + response);
+				this.appid = response.appId
+				this.timestamp = response.timestamp
+				this.nonceStr = response.nonceStr
+				this.signature = response.signature
 				console.log("请求到的数据：" + this.timestamp + "," + this.nonceStr + "," + this.signature);
 				wx.config({
 					debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
@@ -93,11 +94,11 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				});
 			}).catch((error) => {
 				console.log(error);
-				// uni.showToast({
-				// 	title: 'error:' + error,
-				// 	duration: 2000,
-				// 	icon: 'none'
-				// });
+				uni.showToast({
+					title: 'error:' + error,
+					duration: 2000,
+					icon: 'none'
+				});
 			})
 		},
 		methods: {
@@ -107,9 +108,42 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				})
 			},
 			goScan(){
-				uni.showToast({
-					title:"goScan"
-				})
+				// uni.showToast({
+				// 	title:"goScan"
+				// })
+				var that = this;
+				console.log('wxScanCode');
+				wx.scanQRCode({
+					needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+					scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+					success: function(res) {
+						//alert('success'+res);
+						var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+						console.log(result);
+						var scans = result.split('|');
+						// let value3 = '"input1":' + scans[1] + '",input2":' + scans[2]+ ',"input3":' + this.inputTel
+						// console.log('goUpload:' + value3)
+						// location.href =
+						// 	'https://enjoy.abchina.com/jf-open/payment/confirm/?from=nonetaxepayment.van-soft.com/bill&userInput={' + value3 +
+						// 	'}&codEpay=JF-EPAY2017122515280&showBill=0'
+						let value3 = '"input1":"' + scans[1] + '","input2":"' + scans[2]+ '","input3":"' + that.inputTel+'"'
+						console.log('goUpload:' + value3)
+						uni.showToast({
+							title:"扫描结果："+value3
+						})
+						// location.href =
+						// 	'https://enjoy.abchina.com/jf-open/payment/confirm/?from=nonetaxepayment.van-soft.com/bill&userInput=%7B' + value3 +
+						// 	'%7D&codEpay=JF-EPAY2017122515280&showBill=1'
+					},
+					error: function(res) {
+						//alert('error'+res);
+						console.log(res);
+						uni.showToast({
+							title: 'error:' + res.errMsg,
+							duration: 1500
+						});
+					}
+				});
 			},goFeisui(){
 				// uni.showToast({
 				// 	title:"goFeisui"
