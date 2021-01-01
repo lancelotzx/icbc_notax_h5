@@ -22,6 +22,12 @@
 			}
 		}
 	    ,{
+			"path": "pages/charge-commit/index",
+			"style": {
+				
+			}
+		}
+	    ,{
 			"path": "pages/index/school",
 			"style": {
 				
