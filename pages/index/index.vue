@@ -10,24 +10,31 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 -->
 <template>
 	<view class="content">
-		<!-- 图片区域 -->
-		<view style="margin:0;padding:0;padding-top:-10rpx">
-			<image src="/static/images/1.png" mode="widthFix" style="width:100%;display: block;"></image>
+		<!-- banner区域 -->
+		<view style="margin:0;padding:0;">
+			<image src="/static/images/index-01.png" mode="widthFix" 
+			style="width:100%; display: block; position: absolute; z-index: 1;"></image>
 		</view>
-		<!-- 咨询区域 -->
+		<view >
+			<image src="/static/images/index-02.png" mode="widthFix" 
+			style="width:100%; position: absolute; z-index: 1; padding-top: 220rpx; "></image>
+		</view>
+		
 		<u-row :gutter="0">
 			<u-col :span="6">
 				<u-card :show-head="false" :border="false" padding="0" margin="0rpx 10rpx 10rpx 30rpx" >
-					<view slot="body" @click="goScan">
-						<image src="/static/images/scan_pay.png" mode="widthFix" style="width:100%;display: block;" @click="goScan()"></image>
+					<view slot="body" >
+						<image src="/static/images/scan_pay.png" mode="widthFix" 
+						style="width:100%;display: block; position:relative; z-index: 9; padding-top: 420rpx;" @click="goScan()"></image>
 					</view>
 
 				</u-card>
 			</u-col>
 			<u-col :span="6">
 				<u-card :show-head="false" :border="false" padding="0" margin="0rpx 30rpx 10rpx 10rpx">
-					<view slot="body" @click="goFeisui">
-						<image src="/static/images/region_pay2.png" mode="widthFix" style="width:100%;display: block;"></image>
+					<view slot="body" >
+						<image src="/static/images/region_pay2.png" mode="widthFix"
+						style="width:100%;display: block; position:relative; z-index: 9; padding-top: 420rpx;" @click="goFeisui()"></image>
 					</view>
 
 				</u-card>
