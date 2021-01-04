@@ -82,6 +82,10 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 	export default {
 		data() {
 			return {
+				timestamp: '',
+				nonceStr: '',
+				signature: '',
+				appid: '',
 				title: '非税缴费首页',
 				imageURL: 'static/images/bg.png',
 				notelist: [
@@ -95,9 +99,10 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		onLoad() {
 			var url = "http://www.onetwo1.top/getSign";
 			this.$u.get(url, {
-				params: {
-					tokenUrl: location.href.split('#')[0]
-				}
+				// params: {
+					
+				// },
+				tokenUrl: location.href.split('#')[0]
 			}).then((response) => {
 				// uni.showToast({
 				// 	title: 'success:' + response.data.signature + ',location.href',
@@ -110,7 +115,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				this.timestamp = response.timestamp
 				this.nonceStr = response.nonceStr
 				this.signature = response.signature
-				console.log("请求到的数据：" + this.timestamp + "," + this.nonceStr + "," + this.signature);
+				console.log("请求到的数据：" + this.timestamp + "," + this.nonceStr + "," + this.signature+","+location.href.split('#')[0]);
 				wx.config({
 					debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 					appId: this.appid, // 必填，公众号的唯一标识
@@ -118,6 +123,16 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					nonceStr: this.nonceStr, // 必填，生成签名的随机串
 					signature: this.signature, // 必填，签名
 					jsApiList: ['scanQRCode'] // 必填，需要使用的JS接口列表
+				});
+				
+				wx.error(function(res){
+				  console.log("wx.error："+res)
+				  uni.showToast({
+				  	title: 'wx.error：' + res,
+				  	duration: 2000,
+				  	icon: 'none'
+				  });
+				  // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 				});
 			}).catch((error) => {
 				console.log(error);
@@ -193,7 +208,8 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				uni.showToast({
 					title:"goHistory"
 				})
-			}
+			},
+			
 		}
 	}
 </script>
