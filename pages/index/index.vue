@@ -12,8 +12,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 	<view class="content">
 		<!-- banner区域 -->
 		<view style="margin:0;padding:0;">
-			<image src="/static/images/index-01.png" mode="widthFix" 
-			style="width:100%; display: block; position: absolute; z-index: 1;"></image>
+			<image src="/static/images/index-01.png" mode="widthFix" style="width:100%; display: block; position: absolute; z-index: 1;"></image>
 		</view>
 		<view class="subtitle">
 			<view>
@@ -22,58 +21,57 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		</view>
 		<view class="title">
 			<view>
-				<text >非税缴费首页</text>
+				<text>非税缴费首页</text>
 			</view>
 		</view>
 		<view class="note">
-			<u-notice-bar mode="vertical" is-circular="false" :duration="2500" type="error" 
-			:more-icon="true" :is-circular="false" :list="notelist"></u-notice-bar>
+			<u-notice-bar mode="vertical" is-circular="false" :duration="2500" type="error" :more-icon="true" :is-circular="false"
+			 :list="notelist"></u-notice-bar>
 		</view>
-		<view >
-			<image src="/static/images/index-02.png" mode="widthFix" 
-			style="width:100%; position: absolute; z-index: 1; padding-top: 220rpx; "></image>
+		<view>
+			<image src="/static/images/index-02.png" mode="widthFix" style="width:100%; position: absolute; z-index: 1; padding-top: 220rpx; "></image>
 		</view>
-		
-		<u-row :gutter="0">
-			<u-col :span="6" >
-				<u-card :show-head="false" :border="false" padding="0" margin="0rpx 10rpx 10rpx 30rpx" >
-					<view slot="body" >
-						<image src="/static/images/scan_pay.png" mode="widthFix" 
-						style="width:100%;display: block; position:relative; z-index: 9; padding-top: 420rpx;" @click="goScan()"></image>
-					</view>
+		<view class="my_row">
+			<u-row :gutter="0">
+				<u-col :span="6">
+					<u-card :show-head="false" :border="false" padding="0" margin="0rpx 10rpx 10rpx 30rpx">
+						<view slot="body">
+							<image src="/static/images/scan_pay.png" mode="widthFix" style="width:100%;display: block; position:relative; z-index: 9; "
+							 @click="goScan()"></image>
+						</view>
 
-				</u-card>
-			</u-col>
-			<u-col :span="6">
-				<u-card :show-head="false" :border="false" padding="0" margin="0rpx 30rpx 10rpx 10rpx">
-					<view slot="body" >
-						<image src="/static/images/region_pay2.png" mode="widthFix"
-						style="width:100%;display: block; position:relative; z-index: 9; padding-top: 420rpx;" @click="goFeisui()"></image>
-					</view>
+					</u-card>
+				</u-col>
+				<u-col :span="6">
+					<u-card :show-head="false" :border="false" padding="0" margin="0rpx 30rpx 10rpx 10rpx">
+						<view slot="body">
+							<image src="/static/images/region_pay2.png" mode="widthFix" style="width:100%;display: block; position:relative; z-index: 9;"
+							 @click="goFeisui()"></image>
+						</view>
 
-				</u-card>
-			</u-col>
-		</u-row>
-		
-		<u-row :gutter="0">
-			<u-col :span="12">
-				<u-card :show-head="false" :border="false" padding="0">
-					<view slot="body" @click="goSchool" >
-						 <view  class="pay_view"  :style="{backgroundImage: 'url('+imageURL+')',backgroundSize: '100% 100%'}">
-							
-							<text class="pay_text">校园非税缴费入口</text>
-							<view  class="pay_image">
-								<text class="pay_introd">缴费说明</text>
-								<image src="/static/images/about.png" mode="widthFix" style="width:30rpx;"></image>
+					</u-card>
+				</u-col>
+			</u-row>
+
+			<u-row :gutter="0">
+				<u-col :span="12">
+					<u-card :show-head="false" :border="false" padding="0">
+						<view slot="body" @click="goSchool">
+							<view class="pay_view" :style="{backgroundImage: 'url('+imageURL+')',backgroundSize: '100% 100%'}">
+
+								<text class="pay_text">校园非税缴费入口</text>
+								<view class="pay_image">
+									<text class="pay_introd">缴费说明</text>
+									<image src="/static/images/about.png" mode="widthFix" style="width:30rpx;"></image>
+								</view>
+
 							</view>
-							
-						</view> 
-					</view>	
-				</u-card>
-			</u-col>
-		</u-row>
-		
-		
+						</view>
+					</u-card>
+				</u-col>
+			</u-row>
+		</view>
+
 	</view>
 </template>
 
@@ -89,33 +87,25 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				title: '非税缴费首页',
 				imageURL: 'static/images/bg.png',
 				notelist: [
-									'寒雨连江夜入吴',
-									'平明送客楚山孤',
-									'洛阳亲友如相问',
-									'一片冰心在玉壶'
-								]
+					'寒雨连江夜入吴',
+					'平明送客楚山孤',
+					'洛阳亲友如相问',
+					'一片冰心在玉壶'
+				]
 			}
 		},
 		onLoad() {
 			var url = "http://www.onetwo1.top/getSign";
 			this.$u.get(url, {
-				// params: {
-					
-				// },
 				tokenUrl: location.href.split('#')[0]
 			}).then((response) => {
-				// uni.showToast({
-				// 	title: 'success:' + response.data.signature + ',location.href',
-				// 	duration: 2000,
-				// 	icon: 'none'
-				// });
-				//let a = JSON.parse(response.data);
 				console.log("请求到的数据：" + response);
 				this.appid = response.appId
 				this.timestamp = response.timestamp
 				this.nonceStr = response.nonceStr
 				this.signature = response.signature
-				console.log("请求到的数据：" + this.timestamp + "," + this.nonceStr + "," + this.signature+","+location.href.split('#')[0]);
+				console.log("请求到的数据：" + this.timestamp + "," + this.nonceStr + "," + this.signature + "," + location.href.split(
+					'#')[0]);
 				wx.config({
 					debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 					appId: this.appid, // 必填，公众号的唯一标识
@@ -124,15 +114,15 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					signature: this.signature, // 必填，签名
 					jsApiList: ['scanQRCode'] // 必填，需要使用的JS接口列表
 				});
-				
-				wx.error(function(res){
-				  console.log("wx.error："+res)
-				  uni.showToast({
-				  	title: 'wx.error：' + res,
-				  	duration: 2000,
-				  	icon: 'none'
-				  });
-				  // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+
+				wx.error(function(res) {
+					console.log("wx.error：" + res)
+					uni.showToast({
+						title: 'wx.error：' + res,
+						duration: 2000,
+						icon: 'none'
+					});
+					// config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 				});
 			}).catch((error) => {
 				console.log(error);
@@ -144,15 +134,12 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			})
 		},
 		methods: {
-			showInTroToast(){
+			showInTroToast() {
 				uni.showToast({
-					title:"说明"
+					title: "说明"
 				})
 			},
-			goScan(){
-				// uni.showToast({
-				// 	title:"goScan"
-				// })
+			goScan() {
 				var that = this;
 				console.log('wxScanCode');
 				wx.scanQRCode({
@@ -163,19 +150,11 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 						var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
 						console.log(result);
 						var scans = result.split('|');
-						// let value3 = '"input1":' + scans[1] + '",input2":' + scans[2]+ ',"input3":' + this.inputTel
-						// console.log('goUpload:' + value3)
-						// location.href =
-						// 	'https://enjoy.abchina.com/jf-open/payment/confirm/?from=nonetaxepayment.van-soft.com/bill&userInput={' + value3 +
-						// 	'}&codEpay=JF-EPAY2017122515280&showBill=0'
-						let value3 = '"input1":"' + scans[1] + '","input2":"' + scans[2]+ '","input3":"' + that.inputTel+'"'
+						let value3 = '"input1":"' + scans[1] + '","input2":"' + scans[2] + '","input3":"' + that.inputTel + '"'
 						console.log('goUpload:' + value3)
 						uni.showToast({
-							title:"扫描结果："+value3
+							title: "扫描结果：" + value3
 						})
-						// location.href =
-						// 	'https://enjoy.abchina.com/jf-open/payment/confirm/?from=nonetaxepayment.van-soft.com/bill&userInput=%7B' + value3 +
-						// 	'%7D&codEpay=JF-EPAY2017122515280&showBill=1'
 					},
 					error: function(res) {
 						//alert('error'+res);
@@ -186,30 +165,19 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 						});
 					}
 				});
-			},goFeisui(){
-				// uni.showToast({
-				// 	title:"goFeisui"
-				// })
-				// uni.navigateTo({
-				// 	url: '/pages/index/feishui',
-				// });
+			},
+			goFeisui() {
 				this.$u.route('/pages/charge-manual/index')
 			},
-			goSchool(){
-				// uni.showToast({
-				// 	title:"goSchool"
-				// })
-				// uni.navigateTo({
-				// 	url: '/pages/index/school',
-				// });
+			goSchool() {
 				this.$u.route('/pages/charge-school/index')
 			},
-			goHistory(){
+			goHistory() {
 				uni.showToast({
-					title:"goHistory"
+					title: "goHistory"
 				})
 			},
-			
+
 		}
 	}
 </script>
@@ -225,7 +193,8 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		font-size: $consultTitleRpx;
 		font-weight: $consultTitleWeight;
 	}
-	.subtitle{
+
+	.subtitle {
 		padding-top: 62rpx;
 		padding-left: 36rpx;
 		z-index: 2;
@@ -237,6 +206,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		color: #FFFFFF;
 		opacity: 0.8;
 	}
+
 	.title {
 		//width: 256rpx;
 		padding-top: 102rpx;
@@ -251,23 +221,30 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		text-shadow: 0rpx 2rpx 24rpx #FF1F26;
 		opacity: 1;
 	}
+
 	.note {
-		
+
 		padding-top: 262rpx;
-		padding-left: 56rpx;
+		padding-left: 7%;
 		z-index: 2;
-		width: 90%;
+		width: 92%;
 		position: absolute;
-		height: 39rpx;
+		height: 34rpx;
 		font-size: 32rpx;
 		font-family: SourceHanSansSC-Regular;
 		line-height: 35rpx;
 		//color: #444444;
-		
+
 		opacity: 1;
 	}
-	.pay_text{
-		padding-top: 20px ;
+
+	.my_row {
+		padding-top: 420rpx;
+		//margin-top: 210px;
+	}
+
+	.pay_text {
+		padding-top: 20px;
 		padding-left: 5px;
 		font-size: 20px;
 		font-family: SourceHanSansSC-Regular;
@@ -275,23 +252,27 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		color: #FFFFFF;
 		opacity: 1;
 	}
-	.pay_introd{
+
+	.pay_introd {
 		padding-left: 5px;
 		font-size: 12px;
 		font-family: SourceHanSansSC-Regular;
 		color: #FFFFFF;
 		opacity: 1;
 	}
-	.pay_image{
+
+	.pay_image {
 		display: flex;
 		align-items: center
 	}
-	.pay_view{
+
+	.pay_view {
 		height: 140px;
 		display: flex;
 		flex-direction: column;
-		
+
 	}
+
 	.consult-sub {
 		font-size: $consultSubTitleRpx;
 		color: $consultSubTitleColor;
