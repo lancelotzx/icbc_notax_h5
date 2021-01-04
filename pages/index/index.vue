@@ -15,13 +15,27 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			<image src="/static/images/index-01.png" mode="widthFix" 
 			style="width:100%; display: block; position: absolute; z-index: 1;"></image>
 		</view>
+		<view class="subtitle">
+			<view>
+				<text class="his-title">中国工商银行茂名分行</text>
+			</view>
+		</view>
+		<view class="title">
+			<view>
+				<text >非税缴费首页</text>
+			</view>
+		</view>
+		<view class="note">
+			<u-notice-bar mode="vertical" is-circular="false" :duration="2500" type="error" 
+			:more-icon="true" :is-circular="false" :list="notelist"></u-notice-bar>
+		</view>
 		<view >
 			<image src="/static/images/index-02.png" mode="widthFix" 
 			style="width:100%; position: absolute; z-index: 1; padding-top: 220rpx; "></image>
 		</view>
 		
 		<u-row :gutter="0">
-			<u-col :span="6">
+			<u-col :span="6" style="height: 300rpx;">
 				<u-card :show-head="false" :border="false" padding="0" margin="0rpx 10rpx 10rpx 30rpx" >
 					<view slot="body" >
 						<image src="/static/images/scan_pay.png" mode="widthFix" 
@@ -69,7 +83,13 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		data() {
 			return {
 				title: '非税缴费首页',
-				imageURL: 'static/images/bg.png'
+				imageURL: 'static/images/bg.png',
+				notelist: [
+									'寒雨连江夜入吴',
+									'平明送客楚山孤',
+									'洛阳亲友如相问',
+									'一片冰心在玉壶'
+								]
 			}
 		},
 		onLoad() {
@@ -188,6 +208,47 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 	.consult {
 		font-size: $consultTitleRpx;
 		font-weight: $consultTitleWeight;
+	}
+	.subtitle{
+		padding-top: 62rpx;
+		padding-left: 36rpx;
+		z-index: 2;
+		position: absolute;
+		height: 60rpx;
+		font-size: 36rpx;
+		font-family: SourceHanSansSC-Regular;
+		line-height: 37rpx;
+		color: #FFFFFF;
+		opacity: 0.8;
+	}
+	.title {
+		//width: 256rpx;
+		padding-top: 102rpx;
+		padding-left: 36rpx;
+		height: 80rpx;
+		z-index: 2;
+		position: absolute;
+		font-size: 60rpx;
+		font-family: SourceHanSansSC-Bold;
+		line-height: 80rpx;
+		color: #FFFFFF;
+		text-shadow: 0rpx 2rpx 24rpx #FF1F26;
+		opacity: 1;
+	}
+	.note {
+		
+		padding-top: 262rpx;
+		padding-left: 56rpx;
+		z-index: 2;
+		width: 90%;
+		position: absolute;
+		height: 39rpx;
+		font-size: 32rpx;
+		font-family: SourceHanSansSC-Regular;
+		line-height: 35rpx;
+		//color: #444444;
+		
+		opacity: 1;
 	}
 	.pay_text{
 		padding-top: 20px ;
