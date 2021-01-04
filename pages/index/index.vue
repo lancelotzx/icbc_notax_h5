@@ -35,7 +35,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		</view>
 		
 		<u-row :gutter="0">
-			<u-col :span="6" style="height: 300rpx;">
+			<u-col :span="6" >
 				<u-card :show-head="false" :border="false" padding="0" margin="0rpx 10rpx 10rpx 30rpx" >
 					<view slot="body" >
 						<image src="/static/images/scan_pay.png" mode="widthFix" 
