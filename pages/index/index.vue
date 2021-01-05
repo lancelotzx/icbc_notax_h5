@@ -25,7 +25,8 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			</view>
 		</view>
 		<view class="note">
-			<u-notice-bar mode="vertical" is-circular="false" :duration="2500" type="error" :more-icon="true" :is-circular="false"
+			<u-notice-bar mode="vertical" is-circular="false"  bg-color="#ffffff"
+			:duration="2500" type="error" :more-icon="true" :is-circular="false"
 			 :list="notelist"></u-notice-bar>
 		</view>
 		<view>
@@ -236,7 +237,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 	.note {
 
 		padding-top: 262rpx;
-		padding-left: 7%;
+		padding-left: 9%;
 		z-index: 2;
 		width: 92%;
 		position: absolute;
