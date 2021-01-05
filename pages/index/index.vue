@@ -70,6 +70,19 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					</u-card>
 				</u-col>
 			</u-row>
+			
+			<u-row :gutter="0">
+				<u-col :span="12">
+					<u-card :show-head="false" :border="false" padding="0" margin="-20rpx 10rpx 10rpx 10rpx">
+						<view slot="body">
+							<image src="/static/images/index-03.png" mode="widthFix" style="width:100%;display: block; position:relative; z-index: 9;"
+							 @click="goHistory()"></image>
+						</view>
+				
+					</u-card>
+				</u-col>
+			</u-row>
+			
 		</view>
 
 	</view>
@@ -172,10 +185,8 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			goSchool() {
 				this.$u.route('/pages/charge-school/index')
 			},
-			goHistory() {
-				uni.showToast({
-					title: "goHistory"
-				})
+			goHistory() {	
+				this.$u.route('pages/charge-history/index')	
 			},
 
 		}
@@ -240,6 +251,11 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 
 	.my_row {
 		padding-top: 420rpx;
+		//margin-top: 210px;
+	}
+	
+	.my_row2 {
+		padding-top: 920rpx;
 		//margin-top: 210px;
 	}
 
