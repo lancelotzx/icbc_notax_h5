@@ -171,10 +171,25 @@
 		},
 		methods:{
 			submit() {
+				var url = "http://111.231.32.214:9001/epay/ui/get";
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
 						// if(!this.model.agreement) return this.$u.toast('请勾选协议');
-						console.log('验证通过');
+						console.log('验证通过', this.model);
+						this.$u.get(url, {
+							jdsbh:this.model.order_id,
+							skjg: this.model.charger_id,
+							test: '0'
+						})
+						.then(res => {
+											// 如果验证不通过，需要在callback()抛出new Error('错误提示信息')
+											if(res.error) {
+												console.log('error!');
+											} else {
+												// 如果校验通过，也要执行callback()回调
+												console.log(res)
+											}
+										})
 					} else {
 						console.log('验证失败');
 					}
