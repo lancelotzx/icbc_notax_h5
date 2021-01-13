@@ -175,7 +175,7 @@
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
 						// if(!this.model.agreement) return this.$u.toast('请勾选协议');
-						console.log('验证通过', this.model);
+						//console.log('验证通过', this.model);
 						this.$u.get(url, {
 							jdsbh:this.model.order_id,
 							skjg: this.model.charger_id,
@@ -187,7 +187,20 @@
 												console.log('error!');
 											} else {
 												// 如果校验通过，也要执行callback()回调
-												console.log(res)
+												
+												//将script代码和form代码分开分别存放
+												var formstartindex = res.data.indexOf('form')
+												var formendindex = res.data.lastIndexOf('form>')
+												var formstr = res.data.substring(formstartindex-1, formendindex+5)
+												
+												var startindex = res.data.indexOf('script')
+												var endindex = res.data.lastIndexOf('script')
+												var scrpitstr = res.data.substring(startindex-1, endindex+7)
+												
+												// 开始页面跳转
+												uni.setStorageSync('chargedata',formstr)
+												uni.setStorageSync('scriptdata',scrpitstr)
+												this.$u.route('pages/charge-commit/index')
 											}
 										})
 					} else {

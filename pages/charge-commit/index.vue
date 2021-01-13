@@ -41,7 +41,8 @@
 		</view>
 		<view class="bg-subtitle">
 			
-			<web-view src="http://www.onetwo1.top/"></web-view>
+			<div ref="chargeform" v-html="chargedata">
+			 </div>
 		</view>
 
 		
@@ -58,12 +59,19 @@
 		
 		data() {
 			return {
-				
+				chargedata:'',
+				scriptdata:''
 			};
 		},
 		onShow(){
 			let _this = this;
-			
+			this.chargedata = uni.getStorageSync('chargedata')
+			this.scriptdata = uni.getStorageSync('scriptdata')
+			console.log('chargedata',  this.chargedata)
+			console.log('scriptdata',  this.scriptdata)
+			this.$nextTick(() => {
+			        document.form.submit();
+			      })
 		},
 		
 		methods:{
