@@ -71,7 +71,8 @@
 					<u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
 				</u-form>
 			</view>
-			
+			  <div ref="chargeform" v-html="chargedata">
+			 </div>
 		</view>
 
 		
@@ -95,6 +96,9 @@
 					code:'',
 					remember: false,
 				},
+				action_str: '',
+				biz_content_value: '' ,
+				chargedata:'',
 				codeTips: '',
 				border: false,
 				errorType: ['message'],
@@ -170,8 +174,20 @@
 			this.$refs.uForm.setRules(this.rules);
 		},
 		methods:{
+			
+			unescape(html) {
+			    return html
+			      .replace(html ? /&(?!#?\w+;)/g : /&/g, '&amp;')
+			      .replace(/&lt;/g, "<")
+			      .replace(/&gt;/g, ">")
+			      .replace(/&quot;/g, "\"")
+			      .replace(/&#39;/g, "\'");
+			  },
+			
 			submit() {
 				var url = "http://111.231.32.214:9001/epay/ui/get";
+				
+				
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
 						// if(!this.model.agreement) return this.$u.toast('请勾选协议');
@@ -187,20 +203,60 @@
 												console.log('error!');
 											} else {
 												// 如果校验通过，也要执行callback()回调
-												
+												console.log(res.data);
 												//将script代码和form代码分开分别存放
 												var formstartindex = res.data.indexOf('form')
 												var formendindex = res.data.lastIndexOf('form>')
 												var formstr = res.data.substring(formstartindex-1, formendindex+5)
+												
+												
+												// formstr = formstr.replace("hidden", "")　
+												// formstr = formstr.replace("display:none", "")　
+												// 字符串操作，获取action
+												var action_start_index = res.data.indexOf('action') + 8
+												var action_end_index = res.data.indexOf('\'', action_start_index)
+												// console.log(action_start_index, action_end_index)
+												this.action_str = '/api/' +  res.data.substring(action_start_index + 28, action_end_index)
+												//this.action_str = this.unescape(this.action_str)
+												console.log('action = ', this.action_str)
+												
+												// 字符串操作，获取biz_content的值
+												var value_start_index = res.data.indexOf('value=') + 7
+												var value_end_index = res.data.indexOf('\'', value_start_index)
+												this.biz_content_value = res.data.substring(value_start_index, 
+												value_end_index)
+												this.biz_content_value = this.unescape(this.biz_content_value)
+												console.log('biz_content= ', this.biz_content_value)
 												
 												var startindex = res.data.indexOf('script')
 												var endindex = res.data.lastIndexOf('script')
 												var scrpitstr = res.data.substring(startindex-1, endindex+7)
 												
 												// 开始页面跳转
-												uni.setStorageSync('chargedata',formstr)
-												uni.setStorageSync('scriptdata',scrpitstr)
-												this.$u.route('pages/charge-commit/index')
+												// uni.setStorageSync('chargedata',formstr)
+												// uni.setStorageSync('scriptdata',scrpitstr)
+												// this.$u.route('pages/charge-commit/index')
+												
+												console.log('aaa ', this.action_str),
+												console.log('bbb ', this.biz_content_value),
+												//this.biz_content_value = JSON.parse(this.biz_content_value)
+												//console.log('ccc', this.biz_content_value)
+												// this.$u.post(this.action_str, {biz_content: this.biz_content_value})
+												 uni.request({
+													url: this.action_str,                  
+													method: 'post',
+													data: {//参数
+														biz_content: this.biz_content_value
+													},
+													header: {
+													    'content-type': 'application/x-www-form-urlencoded'
+													},
+													success: (res) => {
+														console.log(res.data);
+														this.chargedata = res.data
+														//this.productList = res.data;
+													},                  
+												});
 											}
 										})
 					} else {

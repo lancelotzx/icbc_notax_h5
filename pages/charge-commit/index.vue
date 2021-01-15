@@ -41,8 +41,9 @@
 		</view>
 		<view class="bg-subtitle">
 			
-			<div ref="chargeform" v-html="chargedata">
-			 </div>
+			<!--<div ref="chargeform" v-html="chargedata">
+			 </div>-->
+			 <web-view src ="http://www.onetwo1.top/"></web-view>
 		</view>
 
 		
@@ -70,7 +71,7 @@
 			console.log('chargedata',  this.chargedata)
 			console.log('scriptdata',  this.scriptdata)
 			this.$nextTick(() => {
-			        document.form.submit();
+			    //    document.form.submit();
 			      })
 		},
 		

@@ -83,7 +83,15 @@
             "base" : "/h5/"
         },
         "devServer" : {
-            "https" : false
+            //"https" : false
+			"proxy": {
+					            "/api": {		             
+									"target":" https://gw.open.icbc.com.cn",
+					                "changeOrigin": true,//是否跨域
+					                "secure": true,// 设置支持https协议的代理
+									 "pathRewrite":{"^/api":"/"}
+					            }
+					        }
         }
     }
 }
