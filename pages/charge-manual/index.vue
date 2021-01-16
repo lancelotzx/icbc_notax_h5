@@ -175,90 +175,18 @@
 		},
 		methods:{
 			
-			unescape(html) {
-			    return html
-			      .replace(html ? /&(?!#?\w+;)/g : /&/g, '&amp;')
-			      .replace(/&lt;/g, "<")
-			      .replace(/&gt;/g, ">")
-			      .replace(/&quot;/g, "\"")
-			      .replace(/&#39;/g, "\'");
-			  },
-			
-			submit() {
-				var url = "http://111.231.32.214:9001/epay/ui/get";
-				
-				
+			submit() {				
 				this.$refs.uForm.validate(valid => {
+					/*
+					 * 表单验证判断和提交到下一页charge-commit
+					*/
 					if (valid) {
-						// if(!this.model.agreement) return this.$u.toast('请勾选协议');
-						//console.log('验证通过', this.model);
-						this.$u.get(url, {
-							jdsbh:this.model.order_id,
-							skjg: this.model.charger_id,
-							test: '0'
-						})
-						.then(res => {
-											// 如果验证不通过，需要在callback()抛出new Error('错误提示信息')
-											if(res.error) {
-												console.log('error!');
-											} else {
-												// 如果校验通过，也要执行callback()回调
-												console.log(res.data);
-												//将script代码和form代码分开分别存放
-												var formstartindex = res.data.indexOf('form')
-												var formendindex = res.data.lastIndexOf('form>')
-												var formstr = res.data.substring(formstartindex-1, formendindex+5)
-												
-												
-												// formstr = formstr.replace("hidden", "")　
-												// formstr = formstr.replace("display:none", "")　
-												// 字符串操作，获取action
-												var action_start_index = res.data.indexOf('action') + 8
-												var action_end_index = res.data.indexOf('\'', action_start_index)
-												// console.log(action_start_index, action_end_index)
-												this.action_str = '/api/' +  res.data.substring(action_start_index + 28, action_end_index)
-												//this.action_str = this.unescape(this.action_str)
-												console.log('action = ', this.action_str)
-												
-												// 字符串操作，获取biz_content的值
-												var value_start_index = res.data.indexOf('value=') + 7
-												var value_end_index = res.data.indexOf('\'', value_start_index)
-												this.biz_content_value = res.data.substring(value_start_index, 
-												value_end_index)
-												this.biz_content_value = this.unescape(this.biz_content_value)
-												console.log('biz_content= ', this.biz_content_value)
-												
-												var startindex = res.data.indexOf('script')
-												var endindex = res.data.lastIndexOf('script')
-												var scrpitstr = res.data.substring(startindex-1, endindex+7)
-												
-												// 开始页面跳转
-												// uni.setStorageSync('chargedata',formstr)
-												// uni.setStorageSync('scriptdata',scrpitstr)
-												// this.$u.route('pages/charge-commit/index')
-												
-												console.log('aaa ', this.action_str),
-												console.log('bbb ', this.biz_content_value),
-												//this.biz_content_value = JSON.parse(this.biz_content_value)
-												//console.log('ccc', this.biz_content_value)
-												// this.$u.post(this.action_str, {biz_content: this.biz_content_value})
-												 uni.request({
-													url: this.action_str,                  
-													method: 'post',
-													data: {//参数
-														biz_content: this.biz_content_value
-													},
-													header: {
-													    'content-type': 'application/x-www-form-urlencoded'
-													},
-													success: (res) => {
-														console.log(res.data);
-														this.chargedata = res.data
-														//this.productList = res.data;
-													},                  
-												});
-											}
-										})
+						// 保存参数，开始页面跳转。
+						// TODO: 参数应包括手机号码供后续处理
+						uni.setStorageSync('orderid',this.model.order_id)
+						uni.setStorageSync('chargerid',this.model.charger_id)
+						this.$u.route('pages/charge-commit/index')
+						
 					} else {
 						console.log('验证失败');
 					}

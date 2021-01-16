@@ -3,50 +3,13 @@
 @date:20210101
 @description: 进行缴费提交页面，本页面显示为icbc sdk返回的html代码进行的直接显示
               机制：通过web-view显示html raw code内容，html代码为icbc sdk ui类接口返回的动态代码，
-			  需要放置在tencent云服务器 /usr/local/nginx/html/h5的某位置，或springboot可访问的某位置，
-			  通过nginx 的root来做位置代理。配置完成后，springboot生成的动态文件（文件名需要唯一）通过
-			  web-view直接显示在用户移动前端。
-			  为了调试需要先将root配置为www.onetwo1.top/inde.html
 -->
 
 <template>
 	<view>
-		
-		<view style="width:100%;" >
-			<!--wangjia:使用absolute position可以充当背景-->
-			<view  style="margin:0;padding:0;">
-				<image src="/static/images/ma-01.png" mode="widthFix" style="width:100%; display: block;position: absolute;
-				  z-index: -1;">
-				</image>
-			</view>
-			<u-row :gutter="1" >
-				<u-col  :offset="1">
-					<view style="margin:0;padding:0;padding-top: 76rpx;" @click="goBack">
-						<image src="/static/images/his-02.png" mode="widthFix" style="width:4%; display: block;position: absolute;
-					"></image>
-					</view>
-				</u-col>
-				
-				<u-col  :offset="3.5">
-					<view style="margin:0;padding:0;  padding-bottom: 76rpx; z-index: 2;" >
-						<view>
-							<text class="his-title">缴费提交</text>
-						</view>
-					</view>
-				</u-col>
-			</u-row>
-			
-			
-			
+		<view>	
+			<web-view :src ='src'></web-view>
 		</view>
-		<view class="bg-subtitle">
-			
-			<!--<div ref="chargeform" v-html="chargedata">
-			 </div>-->
-			 <web-view src ="http://www.onetwo1.top/"></web-view>
-		</view>
-
-		
 	</view>
 </template>
 
@@ -60,16 +23,20 @@
 		
 		data() {
 			return {
-				chargedata:'',
-				scriptdata:''
+				order_id:'',
+				charger_id:'',
+				src:'',
+				test: 0, // 正式项目编号test=0，测试项目编号test非0
 			};
 		},
 		onShow(){
 			let _this = this;
-			this.chargedata = uni.getStorageSync('chargedata')
-			this.scriptdata = uni.getStorageSync('scriptdata')
-			console.log('chargedata',  this.chargedata)
-			console.log('scriptdata',  this.scriptdata)
+			this.order_id = uni.getStorageSync('orderid')
+			this.charger_id = uni.getStorageSync('chargerid')
+			console.log('order_id',  this.order_id)
+			console.log('charger_id',  this.charger_id)
+			this.src = 'http://111.231.32.214:9001/epay/ui/get?jdsbh=' + this.order_id + 
+				'&skjg=' + this.charger_id + '&test=' + this.test
 			this.$nextTick(() => {
 			    //    document.form.submit();
 			      })
