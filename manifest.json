@@ -76,7 +76,7 @@
         "enable" : false
     },
     "h5" : {
-        "title" : "工商银行茂名分行非税缴费系统",
+        "title" : "非税缴费系统",
         "domain" : "www.onetwo1.top",
         "router" : {
             "mode" : "hash",

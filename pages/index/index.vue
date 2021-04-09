@@ -16,7 +16,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		</view>
 		<view class="subtitle">
 			<view>
-				<text class="his-title">中国工商银行茂名分行</text>
+				<text class="his-title"><!--中国工商银行茂名分行--></text>
 			</view>
 		</view>
 		<view class="title">
@@ -100,6 +100,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				appid: '',
 				title: '非税缴费首页',
 				imageURL: 'static/images/bg.png',
+				openid: '',
 				notelist: [
 					'寒雨连江夜入吴',
 					'平明送客楚山孤',
@@ -108,7 +109,10 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				]
 			}
 		},
-		onLoad() {
+		onLoad(option) {
+			//TODO: 这里option获取不到参数，需要采用其他方式 by wangjia
+			console.log(option.code);
+			console.log(option.state); 
 			var url = "http://www.onetwo1.top/getSign";
 			this.$u.get(url, {
 				tokenUrl: location.href.split('#')[0]
@@ -146,6 +150,38 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					icon: 'none'
 				});
 			})
+
+			//wangjia: 开始获取用户微信openid,我们进入此页面的地址设定为如下固定值
+			//https://open.weixin.qq.com/connect/oauth2/authorize?
+			//appid=wx1730a5f2a5e3f0b6&redirect_uri=http%3A%2F%2Fwww.onetwo1.top%2Fh5&
+			//response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect
+			
+			//第二步，请求https://api.weixin.qq.com/sns/oauth2/access_token?
+			//appid=wx1730a5f2a5e3f0b6&secret=bebdde2196e78f8fa6e908bb9422c5b2&code=CODE&grant_type=authorization_code
+			var url_wx_openidquery = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx1730a5f2a5e3f0b6&secret=bebdde2196e78f8fa6e908bb9422c5b2&code=' + option.code + '&grant_type=authorization_code' ;
+			
+			this.$u.get(url_wx_openidquery, {
+				
+			}).then((response) => {
+				uni.showToast({
+					title: 'responese:' + JSON.stringify(response),
+					duration: 20000,
+					icon: 'none'
+				});
+				
+				this.openid = response.openid;
+				console.log("openid：" + this.openid);
+				this.notelist.push(this.openid);
+			}).catch((error) => {
+				console.log(error);
+				uni.showToast({
+					title: 'error:' + JSON.stringify(error),
+					duration: 20000,
+					icon: 'none'
+				});
+			})
+
+
 		},
 		methods: {
 			showInTroToast() {
