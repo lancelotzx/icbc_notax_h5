@@ -91,6 +91,20 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 
 <script>
 	import wx from "weixin-jsapi";
+	
+	function getUrlParam (name) {
+	  var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+	  let url = window.location.href.split('#')[0]
+	  let search = url.split('?')[1]
+	  if (search) {
+	    var r = search.substr(0).match(reg)
+	    if (r !== null) return unescape(r[2])
+	    return null
+	  } else {
+	    return null
+	  }
+	}
+	
 	export default {
 		data() {
 			return {
@@ -102,17 +116,14 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				imageURL: 'static/images/bg.png',
 				openid: '',
 				notelist: [
-					'寒雨连江夜入吴',
-					'平明送客楚山孤',
-					'洛阳亲友如相问',
-					'一片冰心在玉壶'
+					
 				]
 			}
 		},
-		onLoad(option) {
+		onLoad() {
 			//TODO: 这里option获取不到参数，需要采用其他方式 by wangjia
-			console.log(option.code);
-			console.log(option.state); 
+			var wxcode = getUrlParam('code');
+			console.log('wxcode = ', wxcode);
 			var url = "http://www.onetwo1.top/getSign";
 			this.$u.get(url, {
 				tokenUrl: location.href.split('#')[0]
@@ -158,7 +169,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			
 			//第二步，请求https://api.weixin.qq.com/sns/oauth2/access_token?
 			//appid=wx1730a5f2a5e3f0b6&secret=bebdde2196e78f8fa6e908bb9422c5b2&code=CODE&grant_type=authorization_code
-			var url_wx_openidquery = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx1730a5f2a5e3f0b6&secret=bebdde2196e78f8fa6e908bb9422c5b2&code=' + option.code + '&grant_type=authorization_code' ;
+			var url_wx_openidquery = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx1730a5f2a5e3f0b6&secret=bebdde2196e78f8fa6e908bb9422c5b2&code=' + wxcode + '&grant_type=authorization_code' ;
 			
 			this.$u.get(url_wx_openidquery, {
 				
