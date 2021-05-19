@@ -124,7 +124,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			//TODO: 这里option获取不到参数，需要采用其他方式 by wangjia
 			var wxcode = getUrlParam('code');
 			console.log('wxcode = ', wxcode);
-			var url = "http://www.onetwo1.top/getSign";
+			var url = "https://www.onetwo1.top/getSign";
 			this.$u.get(url, {
 				tokenUrl: location.href.split('#')[0]
 			}).then((response) => {
@@ -162,14 +162,14 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				});
 			})
 
-			//wangjia: 开始获取用户微信openid,我们进入此页面的地址设定为如下固定值
-			//https://open.weixin.qq.com/connect/oauth2/authorize?
-			//appid=wx1730a5f2a5e3f0b6&redirect_uri=http%3A%2F%2Fwww.onetwo1.top%2Fh5&
-			//response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect
+			//wangjia: 开始获取用户微信openid,我们进入此页面的地址设定为如下固定值 重要，第一步：
+			/*
+			https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fh5&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect
+			*/
 			
 			//第二步，请求https://api.weixin.qq.com/sns/oauth2/access_token?
 			//appid=wx1730a5f2a5e3f0b6&secret=bebdde2196e78f8fa6e908bb9422c5b2&code=CODE&grant_type=authorization_code
-			var url_wx_openidquery = 'https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx1730a5f2a5e3f0b6&secret=bebdde2196e78f8fa6e908bb9422c5b2&code=' + wxcode + '&grant_type=authorization_code' ;
+			var url_wx_openidquery = 'https://www.onetwo1.top/sns/oauth2/access_token?appid=wx1730a5f2a5e3f0b6&secret=bebdde2196e78f8fa6e908bb9422c5b2&code=' + wxcode + '&grant_type=authorization_code' ;
 			
 			this.$u.get(url_wx_openidquery, {
 				
