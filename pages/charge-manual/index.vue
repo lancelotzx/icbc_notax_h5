@@ -185,7 +185,11 @@
 						// TODO: 参数应包括手机号码供后续处理
 						uni.setStorageSync('orderid',this.model.order_id)
 						uni.setStorageSync('chargerid',this.model.charger_id)
-						this.$u.route('pages/charge-commit/index')
+						var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
+			            'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fui%2Fget%3Fjdsbh%3D' + 
+			             this.model.order_id + '%26skjg%3D' + this.model.charger_id + '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
+						window.open(url)
+						//this.$u.route('pages/charge-commit/index')
 						
 					} else {
 						console.log('验证失败');
