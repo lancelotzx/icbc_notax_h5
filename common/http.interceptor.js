@@ -1,5 +1,5 @@
 let httpInterceptor = {
-	baseUrl: 'http://127.0.0.1:8080/', // 请求的本域名
+	baseUrl: 'http://127.0.0.1:9001/', // 请求的本域名
 	method: 'POST',
 	// 设置为json，返回后会对数据进行一次JSON.parse()
 	dataType: 'json',

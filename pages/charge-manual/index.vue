@@ -178,13 +178,14 @@
 			submit() {				
 				this.$refs.uForm.validate(valid => {
 					/*
-					 * 表单验证判断和提交到下一页charge-commit
+					 * 表单验证判断和提交，之前是提交到charge-commit，现在修改为直接提交
+					 * 跳过去了就不能跳回来了
 					*/
 					if (valid) {
 						// 保存参数，开始页面跳转。
 						// TODO: 参数应包括手机号码供后续处理
-						uni.setStorageSync('orderid',this.model.order_id)
-						uni.setStorageSync('chargerid',this.model.charger_id)
+						// uni.setStorageSync('orderid',this.model.order_id)
+						// uni.setStorageSync('chargerid',this.model.charger_id)
 						var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
 			            'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fui%2Fget%3Fjdsbh%3D' + 
 			             this.model.order_id + '%26skjg%3D' + this.model.charger_id + '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						

@@ -153,10 +153,14 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					});
 					// config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 				});
-			}).catch((error) => {
+			}).then(
+			
+			
+			)
+			.catch((error) => {
 				console.log(error);
 				uni.showToast({
-					title: 'error:' + error,
+					title: 'errorxx:' + error,
 					duration: 2000,
 					icon: 'none'
 				});
@@ -184,15 +188,16 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				});
 				
 				this.openid = response.openid;
-				//console.log("openid：" + this.openid);
+				console.log("openid：" + this.openid);
 				//this.notelist.push(this.openid);
 				//将openid放入存储区域用于header处理
-				this.setKey('openid', this.openid);
+				uni.setStorageSync('openid', this.openid);
+				//this.setKey('openid', this.openid);
 				
 			}).catch((error) => {
 				console.log(error);
 				uni.showToast({
-					title: 'error:' + JSON.stringify(error),
+					title: 'errorxxx:' + JSON.stringify(error),
 					duration: 20000,
 					icon: 'none'
 				});
@@ -206,6 +211,8 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					title: "说明"
 				})
 			},
+			// 进入扫码流程，决定书扫码的格式如下
+			// e.g: 440900|440900156041|MM02100010422|1.00|43654|01947|
 			goScan() {
 				var that = this;
 				console.log('wxScanCode');
@@ -216,18 +223,21 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 						//alert('success'+res);
 						var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
 						console.log(result);
+						//通过标记｜的分割得到一个字符串数组scans，scans[1]为收款机关，scans[2]为
+						//决定书编号
 						var scans = result.split('|');
-						let value3 = '"input1":"' + scans[1] + '","input2":"' + scans[2] + '","input3":"' + that.inputTel + '"'
-						console.log('goUpload:' + value3)
-						uni.showToast({
-							title: "扫描结果：" + value3
-						})
+						//开始进行手动录入的同样流程
+						var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
+						'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fui%2Fget%3Fjdsbh%3D' + 
+						 scans[2] + '%26skjg%3D' + scans[1] + '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
+						window.open(url)
+						
 					},
 					error: function(res) {
 						//alert('error'+res);
 						console.log(res);
 						uni.showToast({
-							title: 'error:' + res.errMsg,
+							title: 'erroraaa:' + res.errMsg,
 							duration: 1500
 						});
 					}
