@@ -6,6 +6,8 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 公众号服务端api供我们使用获取到用户openid。
 
 1. 修正title为 非税缴费首页
+20210623 进行用户手机的短信输入提示
+
 
 -->
 <template>
@@ -16,18 +18,78 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		</view>
 		<view class="subtitle">
 			<view>
-				<text class="his-title"><!--中国工商银行茂名分行--></text>
+				<text class="his-title">欢迎{{confirmedPhoneNum}}</text>
 			</view>
 		</view>
 		<view class="title">
 			<view>
-				<text>非税缴费首页</text>
+				<text>茂名工行非税缴费</text>
 			</view>
 		</view>
 		<view class="note">
 			<u-notice-bar mode="vertical" is-circular="false"  bg-color="#ffffff"
 			:duration="2500" type="error" :more-icon="true" :is-circular="false"
 			 :list="notelist"></u-notice-bar>
+		</view>
+		<!--手机是否录入的第一个弹出框提示-->
+		<view>
+			<u-modal v-model="open" :content="content" 
+			@confirm="modalok" 
+			@cancel="modalcancel"
+			:show-cancel-button='true'
+			>	
+			</u-modal>
+		</view>
+		<!--手机未录入，用户点击确认开始第二步手机号录入-->
+		<view >
+			<u-popup v-model="popupshow" mode="bottom" height="290px" border-radius="18">
+				<!-- <view class="u-demo-wrap" style="background-color: #FFFFFF;">
+					<view class="u-demo-area">
+						<u-field
+							v-model="phonenum"
+							label="手机号"
+							placeholder="请填写手机号"
+							:required="required"
+							:icon="icon1"
+							:type="type"
+						>
+						<u-button @click="getCode"  slot="right" size="mini" type="success">发送验证码</u-button>
+						
+						</u-field>
+						<u-field
+							v-model="code"
+							label="验证码"
+							placeholder="请填写验证码"
+							:required="required"
+							:icon="icon2"
+						>
+						</u-field>
+						<u-button plain type="primary" @click="sumbitphone">提交</u-button>
+					</view>
+				</view> -->
+				<u-form :model="phoneform" ref="uForm"  :rules="rules" :errorType="errorType">
+									
+									
+					<view class="u-demo-wrap" style="background-color: #FFFFFF;">
+						<view class="u-demo-area">
+						<u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}"  label-position="top" label="手机号码" prop="phone" label-width="150">
+							<u-input :border="border" placeholder="请输入手机号" v-model="phoneform.phone" type="number"></u-input>
+						<u-button slot="right" type="warning " size="mini" @click="getCode">{{codeTips}}</u-button>
+						</u-form-item>
+						<u-form-item label-position="top" label="验证码" prop="code" label-width="150rpx">
+							<u-input :border="border" placeholder="请输入验证码" v-model="phoneform.code" type="text"></u-input>
+							
+						</u-form-item>
+						</view>
+					</view>
+									
+									
+					<u-button @click="submit">提交</u-button>
+						
+					<u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
+				</u-form>
+			</u-popup>
+			
 		</view>
 		<view>
 			<image src="/static/images/index-02.png" mode="widthFix" style="width:100%; position: absolute; z-index: 1; padding-top: 220rpx; "></image>
@@ -109,6 +171,12 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		data() {
 			return {
 				timestamp: '',
+				content: '若您需要通过手机短信接收电子发票，请选择“确认”后输入手机号码',
+				open: true,
+				popupshow: false,
+				phonenum: '',
+				confirmedPhoneNum: '',
+				errorMessage: '请输入正确的手机号',
 				nonceStr: '',
 				signature: '',
 				appid: '',
@@ -116,11 +184,61 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				imageURL: 'static/images/bg.png',
 				openid: '',
 				notelist: [
-					
-				]
+					"消息通知栏"
+				],
+				phoneform: {
+					phone:'',
+					code:''
+				},
+				codeTips: '',
+				border: false,
+				errorType: ['message'],
+				rules: {	
+							phone: [
+								{
+									required: true,
+									message: '请输入手机号',
+									trigger: ['change','blur'],
+								},
+								{
+									validator: (rule, value, callback) => {
+										// 调用uView自带的js验证规则，详见：https://www.uviewui.com/js/test.html
+										return this.$u.test.mobile(value);
+									},
+									message: '手机号码不正确',
+									// 触发器可以同时用blur和change，二者之间用英文逗号隔开
+									trigger: ['change','blur'],
+								}
+							],
+							code: [
+								{
+									required: true,
+									message: '请输入验证码',
+									trigger: ['change','blur'],
+								},
+								{
+									validator: (rule, value, callback) => {
+										// 调用uView自带的js验证规则，详见：https://www.uviewui.com/js/test.html
+										return this.$u.test.code(value, 4);
+									},
+									message: '验证码不正确',
+									// 触发器可以同时用blur和change，二者之间用英文逗号隔开
+									trigger: ['change','blur'],
+								}
+							],
+						},
 			}
 		},
 		onLoad() {
+			//首先从storage中读取一下phone参数是否存在
+			var phone = uni.getStorageSync('phone');
+			if (phone) {
+				console.log("f", phone)
+				this.open = false
+				
+			}
+			  
+				
 			//TODO: 这里option获取不到参数，需要采用其他方式 by wangjia
 			var wxcode = getUrlParam('code');
 			console.log('wxcode = ', wxcode);
@@ -146,11 +264,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 
 				wx.error(function(res) {
 					console.log("wx.error：" + res)
-					uni.showToast({
-						title: 'wx.error：' + res,
-						duration: 2000,
-						icon: 'none'
-					});
+
 					// config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
 				});
 			}).then(
@@ -181,11 +295,11 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			
 			this.$u.get(url_wx_openidquery, {	
 			}).then((response) => {
-				uni.showToast({
+				/* uni.showToast({
 					title: 'responese:' + JSON.stringify(response),
 					duration: 20000,
 					icon: 'none'
-				});
+				}); */
 				
 				this.openid = response.openid;
 				console.log("openid：" + this.openid);
@@ -252,7 +366,42 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			goHistory() {	
 				this.$u.route('pages/charge-history/index')	
 			},
-
+			modalok() {
+				console.log('modal ok')
+				this.popupshow = true
+			},
+			modalcancel() {
+				console.log('modal cancel')
+			},
+			
+			// 获取验证码
+			getCode() {
+				if(this.$refs.uCode.canGetCode) {
+					// 模拟向后端请求验证码
+					uni.showLoading({
+						title: '正在获取验证码',
+						mask: true
+					})
+					setTimeout(() => {
+						uni.hideLoading();
+						this.$u.post('https://www.onetwo1.top/admin/icbcnotax/getSms', {
+							phone: '+86' + this.phoneform.phone
+						}).then(res => {
+							console.log(res);
+						});
+						// 这里此提示会被this.start()方法中的提示覆盖
+						this.$u.toast('验证码已发送');
+						// 通知验证码组件内部开始倒计时
+						this.$refs.uCode.start();
+					}, 2000);
+				} else {
+					this.$u.toast('倒计时结束后再发送');
+				}
+			},
+			
+			codeChange(text) {
+				this.codeTips = text;
+			},
 		}
 	}
 </script>
@@ -379,5 +528,23 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		width: 90%;
 		margin-top: 20rpx;
 		font-size: 25rpx;
+	}
+
+	.u-demo {
+		padding: 25px 20px;
+	}
+
+	.u-demo-wrap {
+		
+	}
+
+	.u-demo-area {
+		text-align: center;
+		border-width: 1px;
+		border-color: #ddd;
+		border-style: dashed;
+		background-color: rgb(250, 250, 250);
+		padding: 20px 10px;
+		border-radius: 3px;
 	}
 </style>
