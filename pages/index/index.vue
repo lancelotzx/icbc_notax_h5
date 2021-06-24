@@ -42,7 +42,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		</view>
 		<!--手机未录入，用户点击确认开始第二步手机号录入-->
 		<view >
-			<u-popup v-model="popupshow" mode="bottom" height="290px" border-radius="18">
+			<u-popup ref= "pop" v-model="popupshow" mode="bottom" height="290px" border-radius="18">
 				<!-- <view class="u-demo-wrap" style="background-color: #FFFFFF;">
 					<view class="u-demo-area">
 						<u-field
@@ -67,7 +67,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 						<u-button plain type="primary" @click="sumbitphone">提交</u-button>
 					</view>
 				</view> -->
-				<u-form :model="phoneform" ref="uForm"  :rules="rules" :errorType="errorType">
+				<u-form :model="phoneform" ref="phoneform"   :errorType="errorType">
 									
 									
 					<view class="u-demo-wrap" style="background-color: #FFFFFF;">
@@ -84,7 +84,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					</view>
 									
 									
-					<u-button @click="submit">提交</u-button>
+					<u-button @click="submitphoneform">提交</u-button>
 						
 					<u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
 				</u-form>
@@ -377,14 +377,19 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			// 获取验证码
 			getCode() {
 				if(this.$refs.uCode.canGetCode) {
+					if( ! this.$u.test.mobile(this.phoneform.phone) ){
+						this.$u.toast('手机号不合法');
+						return
+					}
 					// 模拟向后端请求验证码
 					uni.showLoading({
 						title: '正在获取验证码',
 						mask: true
 					})
+					//https://www.onetwo1.top/admin/icbcnotax/getSms
 					setTimeout(() => {
 						uni.hideLoading();
-						this.$u.post('https://www.onetwo1.top/admin/icbcnotax/getSms', {
+						this.$u.post('http://127.0.0.1:9001/icbcnotax/getSms', {
 							phone: '+86' + this.phoneform.phone
 						}).then(res => {
 							console.log(res);
@@ -401,6 +406,29 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			
 			codeChange(text) {
 				this.codeTips = text;
+			},
+			submitphoneform() {
+				if(this.$u.test.mobile(this.phoneform.phone))
+					console.log('手机号合法')
+				else
+				{
+					console.log('手机号不合法')
+					return
+				}
+				if(this.$u.test.code(this.phoneform.code, 4))
+					console.log('验证码合法')
+				else
+				{
+					console.log('验证码不合法')
+					return
+				}
+				this.$u.post('http://127.0.0.1:9001/icbcnotax/compareCode', {
+					phone: '+86' + this.phoneform.phone,
+					content: this.phoneform.code
+				}).then(res => {
+					console.log(res);
+				});
+				
 			},
 		}
 	}
