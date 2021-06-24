@@ -153,6 +153,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 
 <script>
 	import wx from "weixin-jsapi";
+	import md5Libs from "uview-ui/libs/function/md5";
 	
 	function getUrlParam (name) {
 	  var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
@@ -381,7 +382,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 						this.$u.toast('手机号不合法');
 						return
 					}
-					// 模拟向后端请求验证码
+					// 向后端请求验证码
 					uni.showLoading({
 						title: '正在获取验证码',
 						mask: true
@@ -389,9 +390,15 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					//https://www.onetwo1.top/admin/icbcnotax/getSms
 					setTimeout(() => {
 						uni.hideLoading();
-						this.$u.post('http://127.0.0.1:9001/icbcnotax/getSms', {
-							phone: '+86' + this.phoneform.phone
-						}).then(res => {
+						this.$u.post('http://127.0.0.1:9001/icbcnotax/getSms', 
+						this.$u.queryParams({
+							phone: '86' + this.phoneform.phone,
+							wxid: '123',//应该为this.openid
+							hmac: md5Libs.md5('123'+'whz1-icbc-wxid')
+						}, false)
+						, 
+						{'Content-Type': 'application/x-www-form-urlencoded'}
+						).then(res => {
 							console.log(res);
 						});
 						// 这里此提示会被this.start()方法中的提示覆盖
@@ -422,10 +429,15 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					console.log('验证码不合法')
 					return
 				}
-				this.$u.post('http://127.0.0.1:9001/icbcnotax/compareCode', {
-					phone: '+86' + this.phoneform.phone,
-					content: this.phoneform.code
-				}).then(res => {
+				this.$u.post('http://127.0.0.1:9001/icbcnotax/compareCode',
+				 this.$u.queryParams({
+				 	phone: '86' + this.phoneform.phone,
+					content: this.phoneform.code,
+				 	wxid: '123',//应该为this.openid
+				 	hmac: md5Libs.md5('123'+'whz1-icbc-wxid')
+				 }, false),
+				 {'Content-Type': 'application/x-www-form-urlencoded'}
+				).then(res => {
 					console.log(res);
 				});
 				
