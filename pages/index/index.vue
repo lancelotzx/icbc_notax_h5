@@ -439,6 +439,12 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				 {'Content-Type': 'application/x-www-form-urlencoded'}
 				).then(res => {
 					console.log(res);
+					this.$u.toast('手机号绑定成功');
+					this.popupshow = false;
+					this.confirmedPhoneNum = this.phoneform.phone
+					uni.setStorageSync('phone', this.phoneform.phone);
+					
+					
 				});
 				
 			},
