@@ -81,6 +81,7 @@
 
 <script>
 	import orderInfo from '@/components/orderInfo.vue';
+	import md5Libs from "uview-ui/libs/function/md5";
 	
 	export default {
 		components:{
@@ -100,6 +101,8 @@
 				biz_content_value: '' ,
 				chargedata:'',
 				codeTips: '',
+				openid: '',
+				hmac: '',
 				border: false,
 				errorType: ['message'],
 				rules: {
@@ -172,6 +175,8 @@
 		},
 		onReady() {
 			this.$refs.uForm.setRules(this.rules);
+			this.openid = uni.getStorageSync('openid');
+			this.hmac = md5Libs.md5(this.openid + 'whz1-icbc-wxid');
 		},
 		methods:{
 			
@@ -188,7 +193,10 @@
 						// uni.setStorageSync('chargerid',this.model.charger_id)
 						var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
 			            'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fui%2Fget%3Fjdsbh%3D' + 
-			             this.model.order_id + '%26skjg%3D' + this.model.charger_id + '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
+			             this.model.order_id + '%26skjg%3D' + this.model.charger_id + 
+						 '%26wxid%3D' + this.openid +
+						 '%26hmac%3D' + this.hmac +
+						 '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
 						window.open(url)
 						//this.$u.route('pages/charge-commit/index')
 						

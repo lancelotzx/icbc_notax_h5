@@ -19,6 +19,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		<view class="subtitle">
 			<view>
 				<text class="his-title">欢迎{{confirmedPhoneNum}}</text>
+				<u-button  size="mini" @click="changePhone"/>更改</u-button>
 			</view>
 		</view>
 		<view class="title">
@@ -43,33 +44,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		<!--手机未录入，用户点击确认开始第二步手机号录入-->
 		<view >
 			<u-popup ref= "pop" v-model="popupshow" mode="bottom" height="290px" border-radius="18">
-				<!-- <view class="u-demo-wrap" style="background-color: #FFFFFF;">
-					<view class="u-demo-area">
-						<u-field
-							v-model="phonenum"
-							label="手机号"
-							placeholder="请填写手机号"
-							:required="required"
-							:icon="icon1"
-							:type="type"
-						>
-						<u-button @click="getCode"  slot="right" size="mini" type="success">发送验证码</u-button>
-						
-						</u-field>
-						<u-field
-							v-model="code"
-							label="验证码"
-							placeholder="请填写验证码"
-							:required="required"
-							:icon="icon2"
-						>
-						</u-field>
-						<u-button plain type="primary" @click="sumbitphone">提交</u-button>
-					</view>
-				</view> -->
-				<u-form :model="phoneform" ref="phoneform"   :errorType="errorType">
-									
-									
+				<u-form :model="phoneform" ref="phoneform"   :errorType="errorType">							
 					<view class="u-demo-wrap" style="background-color: #FFFFFF;">
 						<view class="u-demo-area">
 						<u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}"  label-position="top" label="手机号码" prop="phone" label-width="150">
@@ -81,11 +56,8 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 							
 						</u-form-item>
 						</view>
-					</view>
-									
-									
-					<u-button @click="submitphoneform">提交</u-button>
-						
+					</view>								
+					<u-button @click="submitphoneform">提交</u-button>					
 					<u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
 				</u-form>
 			</u-popup>
@@ -236,11 +208,9 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			var phone = uni.getStorageSync('phone');
 			if (phone) {
 				console.log("f", phone)
-				this.open = false
-				
+				this.confirmedPhoneNum = phone
+				this.open = false				
 			}
-			  
-				
 			//TODO: 这里option获取不到参数，需要采用其他方式 by wangjia
 			var wxcode = getUrlParam('code');
 			console.log('wxcode = ', wxcode);
@@ -420,6 +390,10 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			
 			codeChange(text) {
 				this.codeTips = text;
+			},
+			changePhone(i) {
+				console.log('tag click')
+				this.open = true
 			},
 			submitphoneform() {
 				if(this.$u.test.mobile(this.phoneform.phone))
