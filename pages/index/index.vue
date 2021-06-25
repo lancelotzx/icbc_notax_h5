@@ -187,6 +187,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				notelist: [
 					"消息通知栏"
 				],
+				hmac: '',
 				phoneform: {
 					phone:'',
 					code:''
@@ -290,6 +291,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			
 			//第二步，请求https://api.weixin.qq.com/sns/oauth2/access_token?
 			//appid=wx1730a5f2a5e3f0b6&secret=bebdde2196e78f8fa6e908bb9422c5b2&code=CODE&grant_type=authorization_code
+			//这里使用的uri为我的域名是因为我通过nginx进行转发到qq了
 			var url_wx_openidquery = 'https://www.onetwo1.top/sns/oauth2/access_token?appid='
 			+ 'wx1730a5f2a5e3f0b6&secret=bebdde2196e78f8fa6e908bb9422c5b2&code='
 			                         + wxcode + '&grant_type=authorization_code' ;
@@ -304,6 +306,8 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				
 				this.openid = response.openid;
 				console.log("openid：" + this.openid);
+				
+				this.hmac = md5Libs.md5(this.openid + 'whz1-icbc-wxid');
 				//this.notelist.push(this.openid);
 				//将openid放入存储区域用于header处理
 				uni.setStorageSync('openid', this.openid);
@@ -344,7 +348,10 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 						//开始进行手动录入的同样流程
 						var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
 						'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fui%2Fget%3Fjdsbh%3D' + 
-						 scans[2] + '%26skjg%3D' + scans[1] + '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
+						 scans[2] + '%26skjg%3D' + scans[1] +
+						 '%26wxid%3D' + that.openid +
+						 '%26hmac%3D' + that.hmac +
+						 '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
 						window.open(url)
 						
 					},
@@ -390,11 +397,11 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					//https://www.onetwo1.top/admin/icbcnotax/getSms
 					setTimeout(() => {
 						uni.hideLoading();
-						this.$u.post('http://127.0.0.1:9001/icbcnotax/getSms', 
+						this.$u.post('https://www.onetwo1.top/admin/icbcnotax/getSms', 
 						this.$u.queryParams({
 							phone: '86' + this.phoneform.phone,
-							wxid: '123',//应该为this.openid
-							hmac: md5Libs.md5('123'+'whz1-icbc-wxid')
+							wxid: this.openid,//应该为this.openid
+							hmac: md5Libs.md5(this.openid +'whz1-icbc-wxid')
 						}, false)
 						, 
 						{'Content-Type': 'application/x-www-form-urlencoded'}
@@ -429,12 +436,12 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					console.log('验证码不合法')
 					return
 				}
-				this.$u.post('http://127.0.0.1:9001/icbcnotax/compareCode',
+				this.$u.post('https://www.onetwo1.top/admin/icbcnotax/compareCode',
 				 this.$u.queryParams({
 				 	phone: '86' + this.phoneform.phone,
 					content: this.phoneform.code,
-				 	wxid: '123',//应该为this.openid
-				 	hmac: md5Libs.md5('123'+'whz1-icbc-wxid')
+				 	wxid: this.openid,//应该为this.openid
+				 	hmac: md5Libs.md5(this.openid + 'whz1-icbc-wxid')
 				 }, false),
 				 {'Content-Type': 'application/x-www-form-urlencoded'}
 				).then(res => {
