@@ -78,6 +78,7 @@
 
 <script>
 	import orderInfo from '@/components/orderInfo.vue';
+	import md5Libs from "uview-ui/libs/function/md5";
 	
 	export default {
 		components:{
@@ -93,6 +94,8 @@
 					code:'',
 					remember: false,
 				},
+				openid: '',
+				hmac: '',
 				codeTips: '',
 				border: false,
 				errorType: ['message'],
@@ -100,13 +103,13 @@
 							stu_idcard: [
 								{
 									required: true,
-									message: '请输入执收单位编码',
+									message: '请输入身份证号码',
 									trigger: 'blur' ,
 								},
 								{
-									min: 12,
-									max: 12,
-									message: '执收单位编码为12位',
+									min: 18,
+									max: 18,
+									message: '身份证号码为18位',
 									trigger: ['change','blur'],
 								},
 							],
@@ -166,6 +169,9 @@
 		},
 		onReady() {
 			this.$refs.uForm.setRules(this.rules);
+			this.openid = 'jfifoejfieof3fi';//uni.getStorageSync('openid');
+			this.hmac = md5Libs.md5(this.openid + 'whz1-icbc-wxid');
+			
 		},
 		methods:{
 			submit() {
@@ -173,6 +179,15 @@
 					if (valid) {
 						// if(!this.model.agreement) return this.$u.toast('请勾选协议');
 						console.log('验证通过');
+						var url = "https://www.onetwo1.top/admin/epay/schoolbill";
+									this.$u.get(url, {
+										sfzhm: this.model.stu_idcard,
+										wxid: this.openid,
+										hmac: this.hmac
+									}).then((response) => {
+										console.log("请求到的数据：" + response);
+										})
+						
 					} else {
 						console.log('验证失败');
 					}
