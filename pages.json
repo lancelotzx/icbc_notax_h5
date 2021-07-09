@@ -28,18 +28,6 @@
 			}
 		}
 	    ,{
-			"path": "pages/index/school",
-			"style": {
-				
-			}
-		}
-		,{
-			"path": "pages/index/ticket",
-			"style": {
-				
-			}
-		}
-	    ,{
             "path" : "pages/charge-history/index",
             "style" : {
 				

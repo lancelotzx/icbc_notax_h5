@@ -8,6 +8,9 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 1. 修正title为 非税缴费首页
 20210623 进行用户手机的短信输入提示
 
+20210708 去掉用户手机的短信输入提示，每个表单分别独立设定是否需要手机短信的提示
+20210708 还是保留手机的首页录入提示，三大录入组件都无需再次录入手机。
+
 
 -->
 <template>
@@ -16,12 +19,12 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		<view style="margin:0;padding:0;">
 			<image src="/static/images/index-01.png" mode="widthFix" style="width:100%; display: block; position: absolute; z-index: 1;"></image>
 		</view>
-		<view class="subtitle">
+		 <view class="subtitle">
 			<view>
 				<text class="his-title">欢迎{{confirmedPhoneNum}}</text>
 				<u-button  size="mini" @click="changePhone"/>更改</u-button>
 			</view>
-		</view>
+		</view> 
 		<view class="title">
 			<view>
 				<text>茂名工行非税缴费</text>
@@ -33,31 +36,25 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			 :list="notelist"></u-notice-bar>
 		</view>
 		<!--手机是否录入的第一个弹出框提示-->
-		<view>
+		 <view>
 			<u-modal v-model="open" :content="content" 
 			@confirm="modalok" 
 			@cancel="modalcancel"
 			:show-cancel-button='true'
 			>	
 			</u-modal>
-		</view>
-		<!--手机未录入，用户点击确认开始第二步手机号录入-->
+		</view> 		
 		<view >
-			<u-popup ref= "pop" v-model="popupshow" mode="bottom" height="290px" border-radius="18">
+			<u-popup ref= "pop" v-model="popupshow" mode="bottom" height="220px" border-radius="18">
 				<u-form :model="phoneform" ref="phoneform"   :errorType="errorType">							
 					<view class="u-demo-wrap" style="background-color: #FFFFFF;">
-						<view class="u-demo-area">
+						<view class="u-demo-area">	
 						<u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}"  label-position="top" label="手机号码" prop="phone" label-width="150">
 							<u-input :border="border" placeholder="请输入手机号" v-model="phoneform.phone" type="number"></u-input>
-						<u-button slot="right" type="warning " size="mini" @click="getCode">{{codeTips}}</u-button>
-						</u-form-item>
-						<u-form-item label-position="top" label="验证码" prop="code" label-width="150rpx">
-							<u-input :border="border" placeholder="请输入验证码" v-model="phoneform.code" type="text"></u-input>
-							
-						</u-form-item>
+						</u-form-item>	
 						</view>
 					</view>								
-					<u-button @click="submitphoneform">提交</u-button>					
+					<u-button class="cus_button_1" @click="submitphoneform">提交</u-button>					
 					<u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
 				</u-form>
 			</u-popup>
@@ -161,8 +158,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				],
 				hmac: '',
 				phoneform: {
-					phone:'',
-					code:''
+					phone:''
 				},
 				codeTips: '',
 				border: false,
@@ -184,22 +180,22 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 									trigger: ['change','blur'],
 								}
 							],
-							code: [
-								{
-									required: true,
-									message: '请输入验证码',
-									trigger: ['change','blur'],
-								},
-								{
-									validator: (rule, value, callback) => {
-										// 调用uView自带的js验证规则，详见：https://www.uviewui.com/js/test.html
-										return this.$u.test.code(value, 4);
-									},
-									message: '验证码不正确',
-									// 触发器可以同时用blur和change，二者之间用英文逗号隔开
-									trigger: ['change','blur'],
-								}
-							],
+							// code: [
+							// 	{
+							// 		required: true,
+							// 		message: '请输入验证码',
+							// 		trigger: ['change','blur'],
+							// 	},
+							// 	{
+							// 		validator: (rule, value, callback) => {
+							// 			// 调用uView自带的js验证规则，详见：https://www.uviewui.com/js/test.html
+							// 			return this.$u.test.code(value, 4);
+							// 		},
+							// 		message: '验证码不正确',
+							// 		// 触发器可以同时用blur和change，二者之间用英文逗号隔开
+							// 		trigger: ['change','blur'],
+							// 	}
+							// ],
 						},
 			}
 		},
@@ -291,8 +287,10 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					icon: 'none'
 				});
 			})
-
-
+		},
+		// 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
+		onReady() {
+			this.$refs.phoneform.setRules(this.rules);
 		},
 		methods: {
 			showInTroToast() {
@@ -305,6 +303,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			goScan() {
 				var that = this;
 				console.log('wxScanCode');
+				this.popupshow = true
 				wx.scanQRCode({
 					needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
 					scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
@@ -574,4 +573,9 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		padding: 20px 10px;
 		border-radius: 3px;
 	}
+	
+	.cus_button_1 {
+			color: #d2536f;
+			width: 450rpx;
+		}
 </style>

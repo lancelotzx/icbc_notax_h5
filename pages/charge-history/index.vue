@@ -2,11 +2,12 @@
 @author:wangjia
 @date:20201219
 @description: 将页面适配为新款UI
+
+TODO
 -->
 
 <template>
-	<view>
-		
+	<view>	
 		<view style="width:100%;" >
 			<!--wangjia:使用absolute position可以充当背景-->
 			<view  style="margin:0;padding:0;">
@@ -31,44 +32,53 @@
 				</u-col>
 			</u-row>
 			
-			<!--
-			<view style="margin-top:30rpx;padding-bottom:15rpx;">
-				<u-row>
-					<u-col :span="12">
-						<u-section font-size="35" lineColor="#5b80f6" title="我的订单" :right="false"></u-section>
-					</u-col>
-				</u-row>
-			</view>
-			-->
-			
 		</view>
 		<view class="his-main-bg">
-			 <scroll-view :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
-			                @scroll="scroll">
-			                    <order-info v-for="(order,orderIndex) in 10" :key="orderIndex"></order-info>
-			                </scroll-view>		
+			 <uni-list :border="true" >
+			                   <!-- <order-info v-for="(order,orderIndex) in 10" :key="orderIndex"></order-info> -->
+			  <!-- 垂直排列，无略缩图，主标题+副标题显示 -->
+			      <uni-list-item direction="column" class="uni-item">
+			          <template v-slot:header>
+			              <u-row :gutter="0">
+			              	<u-col :span="9" align="left">
+			              		<text class="order-receiver-name">茂名市教育局学生服务中心</text>
+			              	</u-col>
+			              	<u-col :span="3" align="right">
+			              		<view style="text-align: right;">
+			              			<u-tag type="info" text="市级" shape="circle"></u-tag>
+			              		</view>
+			              	</u-col>
+			              </u-row>
+			          </template>
+			          <template v-slot:body>
+			              <view class="uni-list-box">
+			                  <view class="uni-content">
+			                      <view style="margin-top:15rpx">
+			                      	<u-row :gutter="0">			                      		
+			                      		<u-col :span="2">
+			                      			<view style="text-align: center;">
+			                      				<text class="order-price">￥199912.00</text>
+			                      			</view>
+			                      		</u-col>
+			                      	</u-row>
+			                      </view>
+			                  </view>
+			              </view>
+			          </template>
+			          <template v-slot:footer>
+			              <view class="uni-footer">
+			                  <text class="uni-footer-text">2020/12/20 10:00:00</text>
+			              </view>
+			          </template>
+			      </uni-list-item>
+			</uni-list>		
 		</view>
-		
-		<view class="his-year-selector">
-			<u-row :gutter="0">
-				<u-col :span="6" offset="0.3">
-					<view style="text-align: right;">
-						<u-select v-model="showSel" :list="yearlist" @confirm="confirmSel"></u-select>
-						<u-button type="error" size="mini" plain @click="showSel = true">{{selButtonValue}}年</u-button>
-					</view>
-				</u-col>
-			</u-row>
-		</view>
-		
-		
-		<u-modal v-model="showNoLoginModal" :show-cancel-button="true" :content="content" @cancel="cancelLogin()" @confirm="confirmLogin()"></u-modal>
-		
-		
 	</view>
 </template>
 
 <script>
 	import orderInfo from '@/components/orderInfo.vue';
+	import md5Libs from "uview-ui/libs/function/md5";
 	
 	export default {
 		components:{
@@ -77,56 +87,30 @@
 		
 		data() {
 			return {
-				showSel:false,
-				selButtonValue: 2020,
-				yearlist:[
-					{
-						value: '2020',
-						label: '2020'
-					},
-					{
-						value: '2021',
-						label: '2021'
-					},
-					{
-						value: '2022',
-						label: '2022'
-					},
-					{
-						value: '2023',
-						label: '2023'
-					},
-					{
-						value: '2024',
-						label: '2024'
-					},
-					{
-						value: '2025',
-						label: '2025'
-					},
-				],
+				showSel:false,		
 				scrollTop: 0,
 				old: {
 						scrollTop: 0
 				},
-				            
+				openid: '',
+				hmac: '',
 				showNoLoginModal:false,
-				content:"登录后才可访问更多信息哦"
-				
 			};
 		},
 		onShow(){
-			let _this = this;
-			// console.log("I'm Loaded")
-			var date=new Date;
-			var year=date.getFullYear() ;
-			this.selButtonValue = year;
-			/*
-			if(!this.$getUser())
-			{
-				this.showNoLoginModal = true;
-			}
-			*/
+		    this.openid = 'jfifoejfieof3fi';//uni.getStorageSync('openid');
+		    this.hmac = md5Libs.md5(this.openid + 'whz1-icbc-wxid');
+			var url = "https://www.onetwo1.top/admin/epay/history";
+			this.$u.get(url, {
+				wxid: this.openid,//应该为this.openid
+				hmac: md5Libs.md5(this.openid +'whz1-icbc-wxid'),	
+				pageSize: 2,
+				pageNum: 1
+			}).then((response) => {
+				console.log("请求到的数据：" + response);
+				
+			})
+			
 		},
 		methods:{
 			confirmSel(e) {
@@ -146,20 +130,7 @@
 			scroll: function(e) {
 				// console.log(e)
 				this.old.scrollTop = e.detail.scrollTop
-			},
-			cancelLogin()
-			{
-				this.showNoLoginModal = false;
-				uni.switchTab({
-					url:"/pages/index/index"
-				})
-				
-			},
-			confirmLogin(){
-				uni.navigateTo({
-					url:"/pages/login/login"
-				})
-			}
+			}	
 		}
 	}
 </script>
@@ -210,5 +181,69 @@
 		z-index: 2;
 
 	}
+	.uni-item {
+		background-color: #ffffff;
+	}
+	.order-receiver-name {
+		padding-left: 30rpx;
+		padding-right: 90rpx ;
+	}
+	
+	.uni-title {
+		display: flex;
+		margin-bottom: $uni-spacing-col-base;
+		font-size: $uni-font-size-lg;
+		font-weight: bold;
+		color: #3b4144;
+	}
+	
+	/* 列表内容 */
+	.uni-list-box {
+		@extend .uni-flex-row;
+		flex: 1;
+		margin-top: 10px;
+	}
+	
+	.uni-flex {
+		display: flex;
+	}
+	
+	.uni-flex-row {
+		@extend .uni-flex;
+		flex-direction: row;
+		box-sizing: border-box;
+	}
+	
+	/* 内容 */
+	.uni-content {
+		@extend .uni-flex-column;
+		justify-content: space-between;
+	}
+	
+	/* 列表footer */
+	.uni-footer {
+		@extend .uni-flex-row;
+		justify-content: space-between;
+		margin-top: $uni-spacing-col-lg;
+	}
+	.uni-footer-text {
+		font-size: $uni-font-size-base;
+		color: $uni-text-color;
+		margin-left: 320rpx;
+	
+	}
+	.uni-flex-column {
+		@extend .uni-flex;
+		flex-direction: column;
+	}
+	.order-price{
+		font-size: 43rpx;
+		font-family: SourceHanSansSC-Regular;
+		line-height: 50rpx;
+		color: #FF3952;
+		
+		opacity: 1;
+	}
+	
 	
 </style>

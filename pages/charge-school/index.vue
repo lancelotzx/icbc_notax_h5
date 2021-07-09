@@ -169,7 +169,7 @@
 		},
 		onReady() {
 			this.$refs.uForm.setRules(this.rules);
-			this.openid = 'jfifoejfieof3fi';//uni.getStorageSync('openid');
+			this.openid = uni.getStorageSync('openid');
 			this.hmac = md5Libs.md5(this.openid + 'whz1-icbc-wxid');
 			
 		},
@@ -178,16 +178,13 @@
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
 						// if(!this.model.agreement) return this.$u.toast('请勾选协议');
-						console.log('验证通过');
-						var url = "https://www.onetwo1.top/admin/epay/schoolbill";
-									this.$u.get(url, {
-										sfzhm: this.model.stu_idcard,
-										wxid: this.openid,
-										hmac: this.hmac
-									}).then((response) => {
-										console.log("请求到的数据：" + response);
-										})
-						
+						var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
+			            'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fschoolbill%3Fsfzhm%3D' + 
+			             this.model.stu_idcard + 
+						 '%26wxid%3D' + this.openid +
+						 '%26hmac%3D' + this.hmac +
+						 '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
+						window.open(url)						
 					} else {
 						console.log('验证失败');
 					}
