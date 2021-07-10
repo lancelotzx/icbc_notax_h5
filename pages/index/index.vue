@@ -10,6 +10,13 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 
 20210708 去掉用户手机的短信输入提示，每个表单分别独立设定是否需要手机短信的提示
 20210708 还是保留手机的首页录入提示，三大录入组件都无需再次录入手机。
+功能设计：1，第一次进入系统时，应该通过前端请求后端 openid获取此openid是否
+存在已维护的手机号；
+ 2.若存在已维护的手机号，则不弹出提示；否则弹出提示要求用户录入手机号。
+ 3.若存在已维护的手机号，显示在title位置。
+ 4.若存在已维护的手机号，在三种录入组件中都默认会发送短信给用户。
+ 
+ 现在的功能：首先检测localstorage，其实没必要检测。
 
 
 -->
@@ -22,7 +29,6 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		 <view class="subtitle">
 			<view>
 				<text class="his-title">欢迎{{confirmedPhoneNum}}</text>
-				<u-button  size="mini" @click="changePhone"/>更改</u-button>
 			</view>
 		</view> 
 		<view class="title">
@@ -45,8 +51,9 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			</u-modal>
 		</view> 		
 		<view >
-			<u-popup ref= "pop" v-model="popupshow" mode="bottom" height="220px" border-radius="18">
-				<u-form :model="phoneform" ref="phoneform"   :errorType="errorType">							
+			
+				<u-form  :model="phoneform"  ref="uForm"   :rules="rules"   :errorType="errorType">	
+				  <u-popup ref= "pop" v-model="popupshow" mode="bottom" height="220px" border-radius="18">
 					<view class="u-demo-wrap" style="background-color: #FFFFFF;">
 						<view class="u-demo-area">	
 						<u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}"  label-position="top" label="手机号码" prop="phone" label-width="150">
@@ -56,8 +63,9 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					</view>								
 					<u-button class="cus_button_1" @click="submitphoneform">提交</u-button>					
 					<u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
+				  </u-popup>
 				</u-form>
-			</u-popup>
+			
 			
 		</view>
 		<view>
@@ -141,7 +149,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		data() {
 			return {
 				timestamp: '',
-				content: '若您需要通过手机短信接收电子发票，请选择“确认”后输入手机号码',
+				content: '若您需要通过手机短信接收电子发票，请选择“确认”后输入手机号码，系统会自动保存此号码，若需要修改请在下方的“信息维护”中修改。',
 				open: true,
 				popupshow: false,
 				phonenum: '',
@@ -288,9 +296,14 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				});
 			})
 		},
+		
 		// 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
 		onReady() {
-			this.$refs.phoneform.setRules(this.rules);
+			this.$refs.uForm.setRules(this.rules);
+		},
+		onShow(){
+			let _this = this;
+			
 		},
 		methods: {
 			showInTroToast() {
@@ -395,21 +408,16 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				this.open = true
 			},
 			submitphoneform() {
-				if(this.$u.test.mobile(this.phoneform.phone))
-					console.log('手机号合法')
-				else
-				{
-					console.log('手机号不合法')
-					return
-				}
-				if(this.$u.test.code(this.phoneform.code, 4))
-					console.log('验证码合法')
-				else
-				{
-					console.log('验证码不合法')
-					return
-				}
-				this.$u.post('https://www.onetwo1.top/admin/icbcnotax/compareCode',
+				
+				this.$refs.uForm.validate(valid => {
+					if (valid) {
+						console.log('验证通过');
+					} else {
+						console.log('验证失败');
+					}
+				});
+						
+				/* this.$u.post('https://www.onetwo1.top/admin/icbcnotax/compareCode',
 				 this.$u.queryParams({
 				 	phone: '86' + this.phoneform.phone,
 					content: this.phoneform.code,
@@ -425,7 +433,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					uni.setStorageSync('phone', this.phoneform.phone);
 					
 					
-				});
+				}); */
 				
 			},
 		}
