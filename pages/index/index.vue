@@ -411,7 +411,10 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
-						console.log('验证通过');
+						console.log('验证通过',this.phoneform.phone);
+						this.confirmedPhoneNum = this.phoneform.phone
+						uni.setStorageSync('phone', this.phoneform.phone);
+						this.popupshow = false
 					} else {
 						console.log('验证失败');
 					}
