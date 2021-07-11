@@ -59,14 +59,34 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				<view class="u-demo-wrap" style="background-color: #FFFFFF;">
 					<view class="u-demo-area">	
 					<u-form-item left-icon="phone" label-position="top" 
-					label-style="{font-size: 40px}"  label="请确认您的手机号码" prop="phone" label-width="150">
+					:label-style="labelStyle"  label="请确认您的手机号码" prop="phone" label-width="150">
 						<u-input :border="border" placeholder="请输入手机号" v-model="phoneform.phone" type="number"  
-						 height="90"></u-input>
+						 height="90" :custom-style="labelStyle"></u-input>
 					</u-form-item>	
 					</view>
 				</view>								
 				<u-button class="cus_button_1" @click="submitphoneform">提交</u-button>					
-				<u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
+				<!-- <u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code> -->
+			  </u-popup>
+			</u-form>
+			
+			
+		</view>
+		
+		<view >
+			<!--下方弹出手机输入对话框，表单完全一致,采用phoneform复用，手机号可修改, 用于业务逻辑执行前的确认-->
+			<u-form  :model="phoneform"  ref="uForm"   :rules="rules"   :errorType="errorType">	
+			  <u-popup ref= "pop" v-model="popupshow2" mode="bottom" height="220px" border-radius="18">
+				<view class="u-demo-wrap" style="background-color: #FFFFFF;">
+					<view class="u-demo-area">	
+					<u-form-item left-icon="phone" label-position="top" 
+					:label-style="labelStyle"  label="请确认您的手机号码" prop="phone" label-width="150">
+						<u-input :border="border" placeholder="请输入手机号" v-model="phoneform.phone" type="number"  
+						 height="90" :custom-style="labelStyle"></u-input>
+					</u-form-item>	
+					</view>
+				</view>								
+				<u-button class="cus_button_1" @click="submitphoneform2">提交</u-button>					
 			  </u-popup>
 			</u-form>
 			
@@ -81,7 +101,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 					<u-card :show-head="false" :border="false" padding="0" margin="0rpx 10rpx 10rpx 30rpx">
 						<view slot="body">
 							<image src="/static/images/scan_pay.png" mode="widthFix" style="width:100%;display: block; position:relative; z-index: 9; "
-							 @click="goScan()"></image>
+							 @click="goScanPre()"></image>
 						</view>
 
 					</u-card>
@@ -156,6 +176,8 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				content: '若您需要通过手机短信接收电子发票，请选择“确认”后输入手机号码，系统会自动保存此号码，若需要修改请在下方的“信息维护”中修改。',
 				open: true,
 				popupshow: false,
+				popupshow2: false,
+				labelStyle: {fontSize: '40rpx'},
 				phonenum: '',
 				confirmedPhoneNum: '',
 				errorMessage: '请输入正确的手机号',
@@ -289,7 +311,8 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				this.hmac = md5Libs.md5(this.openid + 'whz1-icbc-wxid');
 				//this.notelist.push(this.openid);
 				//将openid放入存储区域用于header处理
-				uni.setStorageSync('openid', this.openid);
+				if(this.openid != null)
+					uni.setStorageSync('openid', this.openid);
 				//this.setKey('openid', this.openid);
 				
 			}).catch((error) => {
@@ -315,6 +338,9 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				uni.showToast({
 					title: "说明"
 				})
+			},
+			goScanPre(){
+				this.popupshow2 = true;
 			},
 			// 进入扫码流程，决定书扫码的格式如下
 			// e.g: 440900|440900156041|MM02100010422|1.00|43654|01947|
@@ -445,6 +471,17 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				}); */
 				
 			},
+			submitphoneform2() {
+				this.$refs.uForm.validate(valid => {
+					if (valid) {
+						console.log('验证通过',this.phoneform.phone);
+						this.popupshow2 = false
+						this.goScan();		
+					} else {
+						console.log('验证失败');
+					}
+				});
+			}
 		}
 	}
 </script>

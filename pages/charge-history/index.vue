@@ -37,15 +37,16 @@ TODO
 			 <uni-list :border="true" >
 			                   <!-- <order-info v-for="(order,orderIndex) in 10" :key="orderIndex"></order-info> -->
 			  <!-- 垂直排列，无略缩图，主标题+副标题显示 -->
-			      <uni-list-item direction="column" class="uni-item">
+			      <uni-list-item direction="column" class="uni-item" v-for="item in datalist" :key="item.id"
+				   @click="getItem(item.jdsbh, item.skjg)" link>
 			          <template v-slot:header>
 			              <u-row :gutter="0">
 			              	<u-col :span="9" align="left">
-			              		<text class="order-receiver-name">茂名市教育局学生服务中心</text>
+			              		<text class="order-receiver-name">{{item.receiver}}</text>
 			              	</u-col>
 			              	<u-col :span="3" align="right">
 			              		<view style="text-align: right;">
-			              			<u-tag type="info" text="市级" shape="circle"></u-tag>
+			              			<u-tag type="info" :text="item.payType" shape="circle"></u-tag>
 			              		</view>
 			              	</u-col>
 			              </u-row>
@@ -55,9 +56,9 @@ TODO
 			                  <view class="uni-content">
 			                      <view style="margin-top:15rpx">
 			                      	<u-row :gutter="0">			                      		
-			                      		<u-col :span="2">
+			                      		<u-col >
 			                      			<view style="text-align: center;">
-			                      				<text class="order-price">￥199912.00</text>
+			                      				<text class="order-price">金额:{{item.payAmount/100}}元</text>
 			                      			</view>
 			                      		</u-col>
 			                      	</u-row>
@@ -67,7 +68,7 @@ TODO
 			          </template>
 			          <template v-slot:footer>
 			              <view class="uni-footer">
-			                  <text class="uni-footer-text">2020/12/20 10:00:00</text>
+			                  <text class="uni-footer-text">{{item.payTime}}</text>
 			              </view>
 			          </template>
 			      </uni-list-item>
@@ -87,7 +88,8 @@ TODO
 		
 		data() {
 			return {
-				showSel:false,		
+				showSel:false,
+				datalist: [],
 				scrollTop: 0,
 				old: {
 						scrollTop: 0
@@ -98,16 +100,18 @@ TODO
 			};
 		},
 		onShow(){
-		    this.openid = 'jfifoejfieof3fi';//uni.getStorageSync('openid');
+		    this.openid = uni.getStorageSync('openid');
 		    this.hmac = md5Libs.md5(this.openid + 'whz1-icbc-wxid');
 			var url = "https://www.onetwo1.top/admin/epay/history";
 			this.$u.get(url, {
 				wxid: this.openid,//应该为this.openid
 				hmac: md5Libs.md5(this.openid +'whz1-icbc-wxid'),	
-				pageSize: 2,
+				pageSize: 5,
 				pageNum: 1
 			}).then((response) => {
 				console.log("请求到的数据：" + response);
+				this.datalist = response.data.list
+				console.log(this.datalist)
 				
 			})
 			
@@ -116,6 +120,16 @@ TODO
 			confirmSel(e) {
 				console.log(e[0].value)
 				this.selButtonValue = e[0].value
+			},
+			
+			getItem(jdsbh, skjg){
+				var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
+				'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fui%2Fget%3Fjdsbh%3D' + 
+				 jdsbh + '%26skjg%3D' + skjg + 
+				 '%26wxid%3D' + this.openid +
+				 '%26hmac%3D' + this.hmac +
+				 '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
+				window.open(url)
 			},
 			
 			goBack(){
