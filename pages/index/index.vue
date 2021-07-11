@@ -16,7 +16,9 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
  3.若存在已维护的手机号，显示在title位置。
  4.若存在已维护的手机号，在三种录入组件中都默认会发送短信给用户。
  
- 现在的功能：首先检测localstorage，其实没必要检测。
+ 现在的功能：首先检测localstorage，正式使用时，应该是先请求后端，通过openid查询对应的
+ 手机号。【功能设计 第1点】
+ 
 
 
 -->
@@ -51,20 +53,22 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			</u-modal>
 		</view> 		
 		<view >
-			
-				<u-form  :model="phoneform"  ref="uForm"   :rules="rules"   :errorType="errorType">	
-				  <u-popup ref= "pop" v-model="popupshow" mode="bottom" height="220px" border-radius="18">
-					<view class="u-demo-wrap" style="background-color: #FFFFFF;">
-						<view class="u-demo-area">	
-						<u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}"  label-position="top" label="手机号码" prop="phone" label-width="150">
-							<u-input :border="border" placeholder="请输入手机号" v-model="phoneform.phone" type="number"></u-input>
-						</u-form-item>	
-						</view>
-					</view>								
-					<u-button class="cus_button_1" @click="submitphoneform">提交</u-button>					
-					<u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
-				  </u-popup>
-				</u-form>
+			<!--下方弹出手机输入对话框-->
+			<u-form  :model="phoneform"  ref="uForm"   :rules="rules"   :errorType="errorType">	
+			  <u-popup ref= "pop" v-model="popupshow" mode="bottom" height="220px" border-radius="18">
+				<view class="u-demo-wrap" style="background-color: #FFFFFF;">
+					<view class="u-demo-area">	
+					<u-form-item left-icon="phone" label-position="top" 
+					label-style="{font-size: 40px}"  label="请确认您的手机号码" prop="phone" label-width="150">
+						<u-input :border="border" placeholder="请输入手机号" v-model="phoneform.phone" type="number"  
+						 height="90"></u-input>
+					</u-form-item>	
+					</view>
+				</view>								
+				<u-button class="cus_button_1" @click="submitphoneform">提交</u-button>					
+				<u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
+			  </u-popup>
+			</u-form>
 			
 			
 		</view>
@@ -213,6 +217,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			if (phone) {
 				console.log("f", phone)
 				this.confirmedPhoneNum = phone
+				this.phoneform.phone = phone
 				this.open = false				
 			}
 			//TODO: 这里option获取不到参数，需要采用其他方式 by wangjia
@@ -333,6 +338,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 						 scans[2] + '%26skjg%3D' + scans[1] +
 						 '%26wxid%3D' + that.openid +
 						 '%26hmac%3D' + that.hmac +
+						 '%26phone%3D' + that.phoneform.phone + 
 						 '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
 						window.open(url)
 						
@@ -589,4 +595,5 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			color: #d2536f;
 			width: 450rpx;
 		}
+	
 </style>
