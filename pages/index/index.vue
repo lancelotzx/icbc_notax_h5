@@ -75,7 +75,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		
 		<view >
 			<!--下方弹出手机输入对话框，表单完全一致,采用phoneform复用，手机号可修改, 用于业务逻辑执行前的确认-->
-			<u-form  :model="phoneform"  ref="uForm"   :rules="rules"   :errorType="errorType">	
+			<u-form  :model="phoneform"  ref="uForm2"   :rules="rules"   :errorType="errorType">	
 			  <u-popup ref= "pop" v-model="popupshow2" mode="bottom" height="220px" border-radius="18">
 				<view class="u-demo-wrap" style="background-color: #FFFFFF;">
 					<view class="u-demo-area">	
@@ -326,6 +326,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		// 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
 		onReady() {
 			this.$refs.uForm.setRules(this.rules);
+			this.$refs.uForm2.setRules(this.rules);
 		},
 		onShow(){
 			let _this = this;
@@ -345,7 +346,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			goScan() {
 				var that = this;
 				console.log('wxScanCode');
-				this.popupshow = true
+				//this.popupshow = false
 				wx.scanQRCode({
 					needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
 					scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
@@ -470,7 +471,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				
 			},
 			submitphoneform2() {
-				this.$refs.uForm.validate(valid => {
+				this.$refs.uForm2.validate(valid => {
 					if (valid) {
 						console.log('验证通过',this.phoneform.phone);
 						this.popupshow2 = false
