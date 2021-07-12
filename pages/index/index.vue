@@ -40,7 +40,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		</view>
 		<view class="note">
 			<u-notice-bar mode="vertical" is-circular="false"  bg-color="#ffffff"
-			:duration="2500" type="error" :more-icon="true" :is-circular="false"
+			:duration="2500" type="error" :more-icon="true" 
 			 :list="notelist"></u-notice-bar>
 		</view>
 		<!--手机是否录入的第一个弹出框提示-->
@@ -88,9 +88,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				</view>								
 				<u-button class="cus_button_1" @click="submitphoneform2">提交</u-button>					
 			  </u-popup>
-			</u-form>
-			
-			
+			</u-form>			
 		</view>
 		<view>
 			<image src="/static/images/index-02.png" mode="widthFix" style="width:100%; position: absolute; z-index: 1; padding-top: 220rpx; "></image>
