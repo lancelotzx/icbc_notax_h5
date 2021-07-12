@@ -58,7 +58,7 @@ TODO
 			                      	<u-row :gutter="0">			                      		
 			                      		<u-col >
 			                      			<view style="text-align: center;">
-			                      				<text class="order-price">金额:{{item.payAmount/100}}元</text>
+			                      				<text class="order-price">金额:{{item.payAmount}}元</text>
 			                      			</view>
 			                      		</u-col>
 			                      	</u-row>
