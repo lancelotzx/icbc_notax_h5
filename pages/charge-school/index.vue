@@ -177,12 +177,21 @@
 			submit() {
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
+						var computeid = '22' // 默认是android
+						// 判断手机类型是 Android 还是 ios
+						if (uni.getSystemInfoSync().platform === 'android') {
+								console.log('运行Android上')					
+						} else {
+								console.log('运行iOS上')
+								computeid = '21'
+						}
 						// if(!this.model.agreement) return this.$u.toast('请勾选协议');
 						var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
 			            'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fschoolbill%3Fsfzhm%3D' + 
 			             this.model.stu_idcard + 
 						 '%26wxid%3D' + this.openid +
 						 '%26hmac%3D' + this.hmac +
+						 '%26computeid%3D' + computeid +
 						 '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
 						window.open(url)						
 					} else {

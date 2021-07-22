@@ -240,6 +240,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				this.phoneform.phone = phone
 				this.open = false				
 			}
+			
 			//TODO: 这里option获取不到参数，需要采用其他方式 by wangjia
 			var wxcode = getUrlParam('code');
 			console.log('wxcode = ', wxcode);
@@ -345,8 +346,16 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			// e.g: 440900|440900156041|MM02100010422|1.00|43654|01947|
 			goScan() {
 				var that = this;
+				var computeid = '22' // 默认是android
 				console.log('wxScanCode');
 				//this.popupshow = false
+				// 判断手机类型是 Android 还是 ios
+				if (uni.getSystemInfoSync().platform === 'android') {
+						console.log('运行Android上')					
+				} else {
+						console.log('运行iOS上')
+						computeid = '21'
+				}
 				wx.scanQRCode({
 					needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
 					scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
@@ -364,6 +373,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 						 '%26wxid%3D' + that.openid +
 						 '%26hmac%3D' + that.hmac +
 						 '%26phone%3D' + that.phoneform.phone + 
+						 '%26computeid%3D' + computeid +
 						 '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
 						window.open(url)
 						

@@ -219,6 +219,14 @@
 					*/
 					if (valid) {
 						this.popupshow2 = false
+						var computeid = '22' // 默认是android
+						// 判断手机类型是 Android 还是 ios
+						if (uni.getSystemInfoSync().platform === 'android') {
+								console.log('运行Android上')					
+						} else {
+								console.log('运行iOS上')
+								computeid = '21'
+						}
 						// 保存参数，开始页面跳转。
 						// TODO: 参数应包括手机号码供后续处理
 						// uni.setStorageSync('orderid',this.model.order_id)
@@ -228,6 +236,7 @@
 			             this.model.order_id + '%26skjg%3D' + this.model.charger_id + 
 						 '%26wxid%3D' + this.openid +
 						 '%26hmac%3D' + this.hmac +
+						 '%26computeid%3D' + computeid +
 						 '%26phone%3D' + this.phoneform.phone + 
 						 '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
 						window.open(url)

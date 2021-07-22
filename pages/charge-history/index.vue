@@ -41,12 +41,12 @@ TODO
 				   @click="getItem(item.jdsbh, item.skjg)" link>
 			          <template v-slot:header>
 			              <u-row :gutter="0">
-			              	<u-col :span="9" align="left">
+			              	<u-col :span="8" align="left">
 			              		<text class="order-receiver-name">{{item.receiver}}</text>
 			              	</u-col>
-			              	<u-col :span="3" align="right">
+			              	<u-col :span="4" align="right">
 			              		<view style="text-align: right;">
-			              			<u-tag type="info" :text="item.payType" shape="circle"></u-tag>
+			              			<u-tag type="info" :text="item.payType" shape="circle" size="mini"></u-tag>
 			              		</view>
 			              	</u-col>
 			              </u-row>
@@ -58,7 +58,7 @@ TODO
 			                      	<u-row :gutter="0">			                      		
 			                      		<u-col >
 			                      			<view style="text-align: center;">
-			                      				<text class="order-price">金额:{{item.payAmount}}元</text>
+			                      				<text class="order-price">已缴费:{{item.payAmount}}元</text>
 			                      			</view>
 			                      		</u-col>
 			                      	</u-row>
@@ -68,7 +68,7 @@ TODO
 			          </template>
 			          <template v-slot:footer>
 			              <view class="uni-footer">
-			                  <text class="uni-footer-text">{{item.payTime}}</text>
+			                  <text class="uni-footer-text">{{item.payTimeStr}}</text>
 			              </view>
 			          </template>
 			      </uni-list-item>
@@ -123,11 +123,21 @@ TODO
 			},
 			
 			getItem(jdsbh, skjg){
+				var computeid = '22' // 默认是android
+				//this.popupshow = false
+				// 判断手机类型是 Android 还是 ios
+				if (uni.getSystemInfoSync().platform === 'android') {
+						console.log('运行Android上')					
+				} else {
+						console.log('运行iOS上')
+						computeid = '21'
+				}
 				var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
 				'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fui%2Fget%3Fjdsbh%3D' + 
 				 jdsbh + '%26skjg%3D' + skjg + 
 				 '%26wxid%3D' + this.openid +
 				 '%26hmac%3D' + this.hmac +
+				 '%26computeid%3D' + computeid +
 				 '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
 				window.open(url)
 			},
@@ -176,7 +186,7 @@ TODO
 		//height: 1194px;
 		position: absolute;
 		padding-top: 100rpx;
-		padding-left: 100rpx;
+		padding-left: 70rpx;
 		background: #eef5fe;
 		box-shadow: 0px -8rpx 24rpx rgba(0, 0, 0, 0.08);
 		opacity: 1;
