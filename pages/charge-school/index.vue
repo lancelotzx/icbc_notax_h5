@@ -136,6 +136,10 @@
 			this.$refs.uForm.setRules(this.rules);
 			this.openid = uni.getStorageSync('openid');
 			this.hmac = md5Libs.md5(this.openid + 'whz1-icbc-wxid');
+			var phone = uni.getStorageSync('phone');
+			if (phone) {
+				this.model.phone = phone			
+			}
 			
 		},
 		methods:{
@@ -157,6 +161,7 @@
 						 '%26wxid%3D' + this.openid +
 						 '%26hmac%3D' + this.hmac +
 						 '%26computeid%3D' + computeid +
+						 '%26phone%3D' + this.model.phone + 
 						 '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
 						window.open(url)						
 					} else {
