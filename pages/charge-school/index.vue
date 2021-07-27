@@ -5,7 +5,7 @@
  
               20201222 完成UI编制，进行JS编码设计
 			  1.form提交内容定制
-			    元素 1. 执收单位编码stu_idcard
+			    元素 1. 执收单位编码stu_xhid
 				元素 2. 缴费通知书编号order_id
 				元素 3. 手机号码（可选）phone
 -->
@@ -43,11 +43,11 @@
 		<view class="bg-subtitle">
 			<view class="wrap">
 				<u-form :model="model" ref="uForm"  :rules="rules" :errorType="errorType">
-					<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" left-icon="account" label-width="120" label-position="top" label="学生身份证号码" prop="stu_idcard">
-						<u-input :border="border" placeholder="请输入学生身份证号" v-model="model.stu_idcard" type="text"></u-input>
+					<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" left-icon="account" label-width="120" label-position="top" label="学号" prop="stu_xhid">
+						<u-input :border="border" placeholder="请输入学号" v-model="model.stu_xhid" type="text"></u-input>
 					</u-form-item>	
 					
-					<u-form-item   label="是否接收电子票据短信" prop="remember" label-width="320">
+					<!-- <u-form-item   label="是否接收电子票据短信" prop="remember" label-width="320">
 						<u-switch v-model="model.remember" slot="right"></u-switch>
 					</u-form-item>
 					<template v-if="model.remember">
@@ -63,11 +63,15 @@
 					</template>
 					<template v-else>
 						<view></view>
-					</template>
-					<u-button @click="submit">提交</u-button>
+					</template> -->
+					<view class="bg-submit">
+						<u-button shape="circle" type="error" :plain="true"
+						 @click="submit"  >提交</u-button>
+					</view>
+					
 						
-					<u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
-				</u-form>
+					<!-- <u-verification-code seconds="60" ref="uCode" @change="codeChange"></u-verification-code>
+				 --></u-form>
 			</view>
 			
 		</view>
@@ -88,7 +92,7 @@
 		data() {
 			return {
 				model: {
-					stu_idcard: '',
+					stu_xhid: '',
 					order_id: '',
 					phone:'',
 					code:'',
@@ -100,65 +104,26 @@
 				border: false,
 				errorType: ['message'],
 				rules: {
-							stu_idcard: [
+							stu_xhid: [
 								{
 									required: true,
-									message: '请输入身份证号码',
+									message: '请输入学号',
 									trigger: 'blur' ,
 								},
 								{
-									min: 18,
-									max: 18,
-									message: '身份证号码为18位',
-									trigger: ['change','blur'],
-								},
-							],
-							
-							order_id: [
-								{
-									required: true,
-									message: '请输入缴款通知书编号',
-									trigger: 'blur' ,
-								},
-								{
-									min: 13,
-									max: 18,
-									message: '缴款通知书长度不正确',
-									trigger: ['change','blur'],
-								},
-							],
-							
-							phone: [
-								{
-									required: true,
-									message: '请输入手机号',
-									trigger: ['change','blur'],
-								},
-								{
-									validator: (rule, value, callback) => {
-										// 调用uView自带的js验证规则，详见：https://www.uviewui.com/js/test.html
-										return this.$u.test.mobile(value);
+									pattern: /^[0-9a-zA-Z]*$/g,
+									// 正则检验前先将值转为字符串
+									transform(value) {
+										return String(value);
 									},
-									message: '手机号码不正确',
-									// 触发器可以同时用blur和change，二者之间用英文逗号隔开
-									trigger: ['change','blur'],
-								}
-							],
-							code: [
-								{
-									required: true,
-									message: '请输入验证码',
-									trigger: ['change','blur'],
+									message: '学号只能包含字母或数字'
 								},
 								{
-									validator: (rule, value, callback) => {
-										// 调用uView自带的js验证规则，详见：https://www.uviewui.com/js/test.html
-										return this.$u.test.code(value, 4);
-									},
-									message: '验证码不正确',
-									// 触发器可以同时用blur和change，二者之间用英文逗号隔开
+									min: 11,
+									//max: 18,
+									message: '学号至少为11位',
 									trigger: ['change','blur'],
-								}
+								},
 							],
 						},
 			};
@@ -188,7 +153,7 @@
 						// if(!this.model.agreement) return this.$u.toast('请勾选协议');
 						var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
 			            'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fschoolbill%3Fsfzhm%3D' + 
-			             this.model.stu_idcard + 
+			             this.model.stu_xhid + 
 						 '%26wxid%3D' + this.openid +
 						 '%26hmac%3D' + this.hmac +
 						 '%26computeid%3D' + computeid +
@@ -233,6 +198,13 @@
 	.wrap {
 		padding: 30rpx;
 	}
+	.bg-submit {
+		//position: absolute;
+		padding-top: 180rpx;
+		//padding-left: 40rpx;
+
+	}
+	
 	.bg-subtitle {
 		width: 750rpx;
 		height: 900rpx;
