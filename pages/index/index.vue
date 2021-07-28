@@ -29,8 +29,8 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			<image src="/static/images/index-01.png" mode="widthFix" style="width:100%; display: block; position: absolute; z-index: 1;"></image>
 		</view>
 		 <view class="subtitle">
-			<view>
-				<text class="his-title">欢迎{{confirmedPhoneNum}}</text>
+			<view >
+				<text class="his-title">欢迎{{confirmedPhoneNum}}</text>		
 			</view>
 		</view> 
 		<view class="title">
@@ -39,7 +39,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			</view>
 		</view>
 		<view class="note">
-			<u-notice-bar mode="vertical" is-circular="false"  bg-color="#ffffff"
+			<u-notice-bar mode="vertical" :is-circular="false"  bg-color="#ffffff"
 			:duration="2500" type="error" :more-icon="true" 
 			 :list="notelist"></u-notice-bar>
 		</view>
@@ -171,7 +171,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 		data() {
 			return {
 				timestamp: '',
-				content: '若您需要通过手机短信接收电子发票，请选择“确认”后输入手机号码，系统会自动保存此号码，若需要修改请在下方的“信息维护”中修改。',
+				content: '若您需要通过手机短信接收电子发票，请选择“确认”后输入手机号码，系统会自动保存此号码。',
 				open: true,
 				popupshow: false,
 				popupshow2: false,
@@ -238,7 +238,7 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				console.log("f", phone)
 				this.confirmedPhoneNum = phone
 				this.phoneform.phone = phone
-				this.open = false				
+				//this.open = false				
 			}
 			
 			//TODO: 这里option获取不到参数，需要采用其他方式 by wangjia
@@ -334,6 +334,13 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			
 		},
 		methods: {
+			phoneChange(){
+				console.log('change phone',i)
+				uni.showToast({
+					title: "说明"
+				})
+			},
+			
 			showInTroToast() {
 				uni.showToast({
 					title: "说明"
@@ -505,6 +512,10 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 	.consult {
 		font-size: $consultTitleRpx;
 		font-weight: $consultTitleWeight;
+	}
+	.reload1 {
+		//position: absolute;
+		z-index: 10;
 	}
 
 	.subtitle {
