@@ -97,6 +97,7 @@ TODO
 				openid: '',
 				hmac: '',
 				showNoLoginModal:false,
+				havedata: true
 			};
 		},
 		onShow(){
@@ -106,13 +107,39 @@ TODO
 			this.$u.get(url, {
 				wxid: this.openid,//应该为this.openid
 				hmac: md5Libs.md5(this.openid +'whz1-icbc-wxid'),	
-				pageSize: 5,
+				pageSize: 50,
 				pageNum: 1
 			}).then((response) => {
 				console.log("请求到的数据：" + response);
 				this.datalist = response.data.list
 				console.log(this.datalist)
+				if(this.datalist.length == 0) {
+					this.havedata = false
+					this.datalist.push({
+						id: 0,
+						jdsbh: '-',
+						receiver: '-未查询到缴费记录-',
+						skjg: '-',
+						payAmount: '-',
+						payType: '-',
+						payTimeStr: ''				
+					})
+				}
 				
+			}).catch(error => {
+				console.log('error!')
+				if(this.datalist.length == 0) {
+					this.havedata = false
+					this.datalist.push({
+						id: 0,
+						jdsbh: '-',
+						receiver: '未查询到缴费记录',
+						skjg: '-',
+						payAmount: '-',
+						payType: '-',
+						payTimeStr: ''				
+					})
+				}
 			})
 			
 		},
@@ -123,6 +150,10 @@ TODO
 			},
 			
 			getItem(jdsbh, skjg){
+				if(this.havedata == false) {
+					this.$u.toast('未查询到您的缴费记录，请返回')
+					return
+				}
 				var computeid = '22' // 默认是android
 				//this.popupshow = false
 				// 判断手机类型是 Android 还是 ios
@@ -184,13 +215,13 @@ TODO
 	.his-main-bg{
 		//width: 680px;
 		//height: 1194px;
-		position: absolute;
-		padding-top: 100rpx;
-		padding-left: 70rpx;
+		display: flex;
+		padding-top: 50rpx;
+		padding-left: 10rpx;
 		background: #eef5fe;
 		box-shadow: 0px -8rpx 24rpx rgba(0, 0, 0, 0.08);
 		opacity: 1;
-		border-radius: 180rpx 0rpx 0rpx 0rpx;
+		//border-radius: 180rpx 0rpx 0rpx 0rpx;
 	}
 	
 	.his-year-selector{
@@ -207,6 +238,9 @@ TODO
 	}
 	.uni-item {
 		background-color: #ffffff;
+		display: flex;
+		margin-bottom: $uni-spacing-col-base;
+		width: 750rpx;
 	}
 	.order-receiver-name {
 		padding-left: 30rpx;
