@@ -121,9 +121,9 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 						<view slot="body" @click="goSchool">
 							<view class="pay_view" :style="{backgroundImage: 'url('+imageURL+')',backgroundSize: '100% 100%'}">
 
-								<text class="pay_text">校园非税缴费入口</text>
+								<text class="pay_text">学号非税缴费</text>
 								<view class="pay_image">
-									<text class="pay_introd">茂名职业技术学院学号缴费</text>
+									<text class="pay_introd">茂名职业技术学院缴费支持上方扫码缴费</text>
 									<image src="/static/images/about.png" mode="widthFix" style="width:30rpx;"></image>
 								</view>
 
