@@ -3,6 +3,9 @@
 @date:20201219
 @description: 将页面适配为新款UI
 
+@update:20210819
+@description:对于新型单据，440900开头的，在getItem时需要先提示用户，然后进行扫码调用，让用户扫码查看发票。
+
 TODO
 -->
 
@@ -30,8 +33,7 @@ TODO
 						</view>
 					</view>
 				</u-col>
-			</u-row>
-			
+			</u-row>		
 		</view>
 		<view class="his-main-bg">
 			 <uni-list :border="true" >
@@ -74,10 +76,20 @@ TODO
 			      </uni-list-item>
 			</uni-list>		
 		</view>
+		<!--对新票据进行特殊提示-->
+		 <view>
+			<u-modal v-model="open" :content="content" 
+			@confirm="modalok" 
+			@cancel="modalcancel"
+			:show-cancel-button='true'
+			>	
+			</u-modal>
+		</view> 
 	</view>
 </template>
 
 <script>
+	import wx from "weixin-jsapi";
 	import orderInfo from '@/components/orderInfo.vue';
 	import md5Libs from "uview-ui/libs/function/md5";
 	
@@ -88,6 +100,8 @@ TODO
 		
 		data() {
 			return {
+				content: '将通过扫描缴费通知书的二维码进入发票页面，是否继续扫码？',
+				open: false,
 				showSel:false,
 				datalist: [],
 				scrollTop: 0,
@@ -101,6 +115,28 @@ TODO
 			};
 		},
 		onShow(){
+			//wangjia: 为了调用扫码首先需要进行wxconfig预处理
+			var wxappid = uni.getStorageSync('wxappid')
+			var wxtimestamp = uni.getStorageSync('wxtimestamp')
+			var wxnonceStr = uni.getStorageSync('wxnonceStr')
+			var wxsignature = uni.getStorageSync('wxsignature')
+
+			wx.config({
+					debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+					appId: wxappid, // 必填，公众号的唯一标识
+					timestamp: wxtimestamp, // 必填，生成签名的时间戳
+					nonceStr: wxnonceStr, // 必填，生成签名的随机串
+					signature: wxsignature, // 必填，签名
+					jsApiList: ['scanQRCode'] // 必填，需要使用的JS接口列表
+				});
+
+				wx.error(function(res) {
+					console.log("wx.error：" + res)
+
+					// config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+				});
+
+
 		    this.openid = uni.getStorageSync('openid');
 		    this.hmac = md5Libs.md5(this.openid + 'whz1-icbc-wxid');
 			var url = "https://www.onetwo1.top/admin/epay/history";
@@ -148,7 +184,31 @@ TODO
 				console.log(e[0].value)
 				this.selButtonValue = e[0].value
 			},
+			modalok() {
+				this.open = false
+				// 调用扫码
+				wx.scanQRCode({
+					needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+					scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+					success: function(res) {
+						
+					},
+					error: function(res) {
+						//alert('error'+res);
+						console.log(res);
+						uni.showToast({
+							title: 'erroraaa:' + res.errMsg,
+							duration: 1500
+						});
+					}
+				});
+			},
+			modalcancel() {
+				//console.log('modal cancel')
+				this.open = false;
+			},
 			
+			// 点击单条缴费记录查看明细，对新票据进行区分。若jdsbh是440900开头则进行提示和扫码开启。
 			getItem(jdsbh, skjg){
 				if(this.havedata == false) {
 					this.$u.toast('未查询到您的缴费记录，请返回')
@@ -163,14 +223,22 @@ TODO
 						console.log('运行iOS上')
 						computeid = '21'
 				}
-				var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
-				'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fui%2Fget%3Fjdsbh%3D' + 
-				 jdsbh + '%26skjg%3D' + skjg + 
-				 '%26wxid%3D' + this.openid +
-				 '%26hmac%3D' + this.hmac +
-				 '%26computeid%3D' + computeid +
-				 '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
-				window.open(url)
+				var newflag = jdsbh.indexOf("440900");
+				if(newflag == 0){
+				  //表示是以440900开头；新市级单据
+				  this.open = true
+				  
+				}else if(newflag == -1){
+				  // 表示不是440900开头；
+				  var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
+				  'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fui%2Fget%3Fjdsbh%3D' + 
+				   jdsbh + '%26skjg%3D' + skjg + 
+				   '%26wxid%3D' + this.openid +
+				   '%26hmac%3D' + this.hmac +
+				   '%26computeid%3D' + computeid +
+				   '&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect'						
+				  window.open(url)
+				}		
 			},
 			
 			goBack(){

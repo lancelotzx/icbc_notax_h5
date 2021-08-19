@@ -253,8 +253,14 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 				this.timestamp = response.timestamp
 				this.nonceStr = response.nonceStr
 				this.signature = response.signature
-				console.log("请求到的数据：" + this.timestamp + "," + this.nonceStr + "," + this.signature + "," + location.href.split(
-					'#')[0]);
+				// wangjia:保存微信鉴权信息到浏览器存储空间，便于历史记录页面调用扫码。此信息有时效。
+				uni.setStorageSync('wxappid', this.appid);
+				uni.setStorageSync('wxtimestamp', this.timestamp);
+				uni.setStorageSync('wxnonceStr', this.nonceStr);
+				uni.setStorageSync('wxsignature', this.signature);
+
+				//console.log("请求到的数据：" + this.timestamp + "," + this.nonceStr + "," + this.signature + "," + location.href.split(
+				//	'#')[0]);
 				wx.config({
 					debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 					appId: this.appid, // 必填，公众号的唯一标识
