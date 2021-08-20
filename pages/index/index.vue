@@ -357,6 +357,12 @@ TODO：进入本页面时，需要注意获取到用户的openid，需要工行�
 			},
 			// 进入扫码流程，决定书扫码的格式如下
 			// e.g: 440900|440900156041|MM02100010422|1.00|43654|01947|
+
+			// 新票据决定书的扫码格式如下：
+			// http://wsjf.gdgpo.gov.cn/GdOnlinePay/QrCodeHandle/nontaxQrCode.do?
+			// reqData=440900|440900156012|44090021000005324570|0.01|25349|09877&
+			// expireDate=1636098405979&checkCode=E3C90B1E708D41CD5C3EC3502EF1C39C
+			// 很巧（可能有意为之），和旧票据的分隔符以及顺序分布是一样的，因此scan是可以直接兼容。
 			goScan() {
 				var that = this;
 				var computeid = '22' // 默认是android
