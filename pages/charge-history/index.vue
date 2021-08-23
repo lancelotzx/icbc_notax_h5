@@ -223,13 +223,14 @@ TODO
 						console.log('运行iOS上')
 						computeid = '21'
 				}
-				var newflag = jdsbh.indexOf("440900");
+				// wangjia：44090和44098开头都是新票据，通过4409开头识别
+				var newflag = jdsbh.indexOf("4409");
 				if(newflag == 0){
-				  //表示是以440900开头；新市级单据
+				  //表示是以4409开头；新市级单据
 				  this.open = true
 				  
 				}else if(newflag == -1){
-				  // 表示不是440900开头；
+				  // 表示不是4409开头；
 				  var url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1730a5f2a5e3f0b6&' +
 				  'redirect_uri=https%3A%2F%2Fwww.onetwo1.top%2Fadmin%2Fepay%2Fui%2Fget%3Fjdsbh%3D' + 
 				   jdsbh + '%26skjg%3D' + skjg + 
