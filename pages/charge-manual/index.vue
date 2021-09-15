@@ -110,9 +110,9 @@
 									trigger: 'blur' ,
 								},
 								{
-									min: 12,
+									min: 9,
 									max: 12,
-									message: '执收单位编码为12位',
+									message: '执收单位编码为9~12位',
 									trigger: ['change','blur'],
 								},
 							],
