@@ -125,7 +125,7 @@
 								},
 								{
 									min: 13,
-									max: 18,
+									max: 20,
 									message: '缴款通知书长度不正确',
 									trigger: ['change','blur'],
 								},
